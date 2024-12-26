@@ -1,0 +1,135 @@
+{
+  "id": "3476274",
+  "name": "mq2实物平台",
+  "font_family": "iconfont",
+  "css_prefix_text": "mq2-pc",
+  "description": "实物平台PC端专用",
+  "glyphs": [
+    {
+      "icon_id": "22416402",
+      "name": "货车1_fill",
+      "font_class": "truck_fill",
+      "unicode": "e7ff",
+      "unicode_decimal": 59391
+    },
+    {
+      "icon_id": "704840",
+      "name": "jisuanqi",
+      "font_class": "jisuanqi",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "3216562",
+      "name": "建筑材料",
+      "font_class": "jianzhucailiao",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
+      "icon_id": "24254827",
+      "name": "中间称重",
+      "font_class": "zhongjianchengzhong",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "8080551",
+      "name": "icon_plat",
+      "font_class": "icon_plat",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "12097394",
+      "name": "单位",
+      "font_class": "danwei",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "15686533",
+      "name": "过磅费",
+      "font_class": "guobangfei",
+      "unicode": "e6c2",
+      "unicode_decimal": 59074
+    },
+    {
+      "icon_id": "11409202",
+      "name": "车辆信息管理",
+      "font_class": "cheliangxinxiguanli",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "1820723",
+      "name": "车辆列表",
+      "font_class": "cheliangliebiao",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "2959004",
+      "name": "车辆排班",
+      "font_class": "cheliangpaiban",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "5188105",
+      "name": "日历",
+      "font_class": "rili",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "14236853",
+      "name": "百分比",
+      "font_class": "baifenbi",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "4360963",
+      "name": "车辆管理",
+      "font_class": "cheliangguanli",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "6801882",
+      "name": "Weight-Libra",
+      "font_class": "Weight-Libra",
+      "unicode": "e6ca",
+      "unicode_decimal": 59082
+    },
+    {
+      "icon_id": "29040709",
+      "name": "land_icon_weight@2x",
+      "font_class": "a-land_icon_weight2x",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "7057562",
+      "name": "数据库",
+      "font_class": "shujuku",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "15344262",
+      "name": "税务缴纳",
+      "font_class": "shuiwujiaona",
+      "unicode": "e65f",
+      "unicode_decimal": 58975
+    },
+    {
+      "icon_id": "22376137",
+      "name": "数据库型",
+      "font_class": "shujukuxing",
+      "unicode": "ed99",
+      "unicode_decimal": 60825
+    }
+  ]
+}

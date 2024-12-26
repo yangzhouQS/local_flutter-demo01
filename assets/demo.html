@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebView Example</title>
+    <script type="text/javascript">
+        function executeFlutterCommand(command) {
+            // 调用Flutter方法
+            window.flutter_inappwebview.callHandler('executeFlutterCommand', command, function(response) {
+                console.log(response);
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>Hello from H5</h1>
+<button onclick="executeFlutterCommand('your_command')">Execute Flutter Command</button>
+</body>
+</html>
