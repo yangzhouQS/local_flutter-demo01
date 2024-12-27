@@ -47,7 +47,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         // 统一设置顶部导航颜色
         appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(color: Colors.white, fontSize: 22),
+          centerTitle: true,
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 22, ),
           elevation: 0,
           backgroundColor: Colors.blue,
         ),
@@ -65,9 +66,9 @@ class MyApp extends StatelessWidget {
       // 设置找不到路由时的页面
       unknownRoute: GetPage(name: "/404", page: () => PageNotFound()),
 
-      routingCallback: (value) => {
+      /*routingCallback: (value) => {
         print("routingCallback: ${value}")
-      },
+      },*/
 
       // 存在问题, 所有页面在应用启动时会全部初始化好
       getPages: PageRouter.routers,

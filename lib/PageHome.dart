@@ -49,85 +49,115 @@ class _PageHomeState extends State<PageHome> {
       appBar: AppBar(
         title: Text('首页'),
       ),
-      body: Column(children: <Widget>[
-        SizedBox(height: 16),
-        // 水平排列
-        Flex(direction: Axis.horizontal, children: <Widget>[
-          TDButton(
-            text: "flex布局测试",
-            size: TDButtonSize.large,
-            type: TDButtonType.fill,
-            shape: TDButtonShape.rectangle,
-            theme: TDButtonTheme.primary,
-            onTap: () => {
-              Get.toNamed("/PageFlex"),
-              print("flex布局测试"),
-              // Get.to(PageFlex())
-              /*GetPage(
-                name: 'PageFlex',
-                page: () => PageFlex(),
-              )*/
-              // Get.toNamed(RouteGet.PageFlex);
-            },
+      body: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(children: <Widget>[
+          SizedBox(height: 16),
+          // 水平排列
+          Flex(direction: Axis.horizontal, children: <Widget>[
+            TDButton(
+              text: "flex布局测试",
+              size: TDButtonSize.large,
+              type: TDButtonType.fill,
+              shape: TDButtonShape.rectangle,
+              theme: TDButtonTheme.primary,
+              onTap: () => {
+                print("flex布局测试"),
+                Get.toNamed("/PageFlex")
+              },
+            ),
+            SizedBox(width: 20),
+            TDButton(
+              onTap: () => {
+                print("dev运营平台"),
+                Get.toNamed("/PageFrameView", arguments: {'url': 'http://dev.yearrow.com'})
+              },
+              text: 'dev运营平台',
+              icon: TDIcons.app,
+              size: TDButtonSize.large,
+              type: TDButtonType.outline,
+              shape: TDButtonShape.rectangle,
+              theme: TDButtonTheme.primary,
+            ),
+
+          ]),
+          SizedBox(height: 16),
+          Flex(direction: Axis.horizontal, children: <Widget>[
+            TDButton(
+              onTap: () => {
+                print("梦城"),
+                Get.toNamed("/PageFlex", arguments: {'url': 'https://i.mctech.vip'}),
+              },
+              text: 'dev运营平台',
+              icon: TDIcons.app,
+              size: TDButtonSize.large,
+              type: TDButtonType.outline,
+              shape: TDButtonShape.rectangle,
+              theme: TDButtonTheme.primary,
+            ),
+            SizedBox(width: 20),
+            TDButton(
+              onTap: () => {
+                print("demo测试"),
+                Get.toNamed("/PageFlex", arguments: {'url': 'http://www.yearrow.com/test-demo/index.html'}),
+              },
+              text: 'demo测试',
+              icon: TDIcons.app,
+              size: TDButtonSize.large,
+              type: TDButtonType.outline,
+              shape: TDButtonShape.rectangle,
+              theme: TDButtonTheme.primary,
+            ),
+          ]),
+          SizedBox(height: 16),
+          Row(
+            children: List.generate(3, (index) => getItem(index)),
           ),
-          SizedBox(width: 20),
-          TDButton(
-            text: '描边按钮',
-            icon: TDIcons.app,
-            size: TDButtonSize.large,
-            type: TDButtonType.outline,
-            shape: TDButtonShape.rectangle,
-            theme: TDButtonTheme.primary,
+          Flexible(
+            flex: 2,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: HexColor.fromHex('#165dff'),
+              child: Text('首页'),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Flexible(
+            flex: 1,
+            child: TDBottomTabBar(TDBottomTabBarBasicType.iconText,
+                useVerticalDivider: false,
+                navigationTabs: [
+                  TDBottomTabBarTabConfig(
+                    tabText: '首页',
+                    selectedIcon: _selectedIcon,
+                    unselectedIcon: _unSelectedIcon,
+                    onTap: () {
+                      print("首页");
+                    },
+                  ),
+                  TDBottomTabBarTabConfig(
+                    tabText: '消息',
+                    selectedIcon: _selectedIcon,
+                    unselectedIcon: _unSelectedIcon,
+                    onTap: () {
+                      print("message");
+                    },
+                  ),
+                  TDBottomTabBarTabConfig(
+                    tabText: '我的',
+                    selectedIcon: _selectedIcon,
+                    unselectedIcon: _unSelectedIcon,
+                    onTap: () {
+                      print("标签1");
+                    },
+                  ),
+                ]),
           )
         ]),
-        SizedBox(height: 16),
-        Row(
-          children: List.generate(3, (index) => getItem(index)),
-        ),
-        Flexible(
-          flex: 2,
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: HexColor.fromHex('#165dff'),
-            child: Text('首页'),
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Flexible(
-          flex: 1,
-          child: TDBottomTabBar(TDBottomTabBarBasicType.iconText,
-              useVerticalDivider: false,
-              navigationTabs: [
-                TDBottomTabBarTabConfig(
-                  tabText: '首页',
-                  selectedIcon: _selectedIcon,
-                  unselectedIcon: _unSelectedIcon,
-                  onTap: () {
-                    print("首页");
-                  },
-                ),
-                TDBottomTabBarTabConfig(
-                  tabText: '消息',
-                  selectedIcon: _selectedIcon,
-                  unselectedIcon: _unSelectedIcon,
-                  onTap: () {
-                    print("message");
-                  },
-                ),
-                TDBottomTabBarTabConfig(
-                  tabText: '我的',
-                  selectedIcon: _selectedIcon,
-                  unselectedIcon: _unSelectedIcon,
-                  onTap: () {
-                    print("标签1");
-                  },
-                ),
-              ]),
-        )
-      ]),
+      ),
     );
   }
 }
