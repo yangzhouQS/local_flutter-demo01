@@ -3,14 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
-import './pages/PageLogin/PageLogin.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
-import './HexColor.dart';
 import './PageHome.dart';
-import 'pages/PageLayout/PageFlex.dart';
+import 'PageRoutes.dart';
+import './pages/PageNotFound/PageNotFound.dart';
 
 void main() async {
   // 初始化flutter绑定，确保在调用任何Flutter API之前完成。
@@ -55,18 +54,23 @@ class MyApp extends StatelessWidget {
       ),
       // home: const MyHomePage(url: 'https://test.yearrow.com'),
       home: PageHome(),
-      // initialRoute: "/home",
+
+      // 设置初始路由
+      initialRoute: "/home",
 
       // 隐藏debug 图标
       debugShowCheckedModeBanner: false,
       // 设置页面切换动画效果
       defaultTransition: Transition.rightToLeftWithFade,
-      getPages: [
-        GetPage(name: "/", page: () => PageHome()),
-        GetPage(name: "/home", page: () => PageHome()),
-        GetPage(name: "/login", page: () => PageLogin()),
-        // GetPage(name: "/PageFlex", page: () => PageFlex()),
-      ],
+      // 设置找不到路由时的页面
+      unknownRoute: GetPage(name: "/404", page: () => PageNotFound()),
+
+      routingCallback: (value) => {
+        print("routingCallback: ${value}")
+      },
+
+      // 存在问题, 所有页面在应用启动时会全部初始化好
+      getPages: PageRouter.routers,
     );
   }
 }

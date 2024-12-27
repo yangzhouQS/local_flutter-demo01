@@ -50,6 +50,7 @@ class _PageHomeState extends State<PageHome> {
         title: Text('首页'),
       ),
       body: Column(children: <Widget>[
+        SizedBox(height: 16),
         // 水平排列
         Flex(direction: Axis.horizontal, children: <Widget>[
           TDButton(
@@ -59,6 +60,8 @@ class _PageHomeState extends State<PageHome> {
             shape: TDButtonShape.rectangle,
             theme: TDButtonTheme.primary,
             onTap: () => {
+              Get.toNamed("/PageFlex"),
+              print("flex布局测试"),
               // Get.to(PageFlex())
               /*GetPage(
                 name: 'PageFlex',
@@ -67,6 +70,7 @@ class _PageHomeState extends State<PageHome> {
               // Get.toNamed(RouteGet.PageFlex);
             },
           ),
+          SizedBox(width: 20),
           TDButton(
             text: '描边按钮',
             icon: TDIcons.app,
@@ -76,6 +80,7 @@ class _PageHomeState extends State<PageHome> {
             theme: TDButtonTheme.primary,
           )
         ]),
+        SizedBox(height: 16),
         Row(
           children: List.generate(3, (index) => getItem(index)),
         ),

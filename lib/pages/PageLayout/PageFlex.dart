@@ -8,6 +8,10 @@ class PageFlex extends StatefulWidget {
 class _PageFlexState extends State<PageFlex> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: Text("Page Flex 布局测试"),
+      ),
+    );
   }
 }

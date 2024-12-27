@@ -10,9 +10,8 @@ class _PageNotFoundState extends State<PageNotFound> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Page Not Found'),
+        child: Text("Page Not Found"),
       ),
     );
   }
 }
-
