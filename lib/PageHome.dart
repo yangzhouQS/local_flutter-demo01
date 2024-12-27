@@ -86,7 +86,7 @@ class _PageHomeState extends State<PageHome> {
             TDButton(
               onTap: () => {
                 print("梦城"),
-                Get.toNamed("/PageFlex", arguments: {'url': 'https://i.mctech.vip'}),
+                Get.toNamed("/PageFrameView", arguments: {'url': 'https://i.mctech.vip'}),
               },
               text: 'dev运营平台',
               icon: TDIcons.app,
@@ -99,7 +99,7 @@ class _PageHomeState extends State<PageHome> {
             TDButton(
               onTap: () => {
                 print("demo测试"),
-                Get.toNamed("/PageFlex", arguments: {'url': 'http://www.yearrow.com/test-demo/index.html'}),
+                Get.toNamed("/PageFrameView", arguments: {'url': 'http://www.yearrow.com/test-demo/index.html'}),
               },
               text: 'demo测试',
               icon: TDIcons.app,
