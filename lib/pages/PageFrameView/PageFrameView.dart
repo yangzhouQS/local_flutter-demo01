@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 
 class PageFrameView extends StatefulWidget {
   PageFrameView({Key? key}) : super(key: key);
@@ -13,44 +11,76 @@ class PageFrameView extends StatefulWidget {
 }
 
 class _PageFrameViewState extends State<PageFrameView> {
+  String title = "页面";
+  bool isRendered = false;
+  String url = "http://dev.yearrow.com";
+  final argumentData = Get.arguments;
+
   @override
-  Widget build(BuildContext context) {
-    bool isRendered = false;
-    String url = "";
-    final argumentData = Get.arguments;
+  void didUpdateWidget(PageFrameView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    isRendered = false;
+    url = '';
+    if (argumentData && argumentData["url"]) {
+      url = argumentData["url"];
+      isRendered = true;
+    } else {
+      url = "";
+      isRendered = false;
+      TDToast.showIconText('打开url参数不存在',
+          icon: TDIcons.check_circle,
+          direction: IconTextDirection.vertical,
+          context: context);
+    }
+    print("-------------url = $url");
+  }
+
+  // 创建
+  @override
+  void initState() {
+    print("-------------initState-------------------");
+    super.initState();
     print("参数：name===================");
     print(argumentData);
+    print("url=================== $url");
 
-    PullToRefreshController? pullToRefreshController;
-    double progress = 0.0;
-    InAppWebViewController? controller;
+    this.url = argumentData["url"] ?? "";
+    this.isRendered = true;
+    print("参数：url=================== $url");
+
+    /*if (argumentData && argumentData["url"]) {
+      this.url = argumentData["url"];
+      this.isRendered = true;
+    } else {
+      TDToast.showIconText('打开url参数不存在',
+          icon: TDIcons.check_circle,
+          direction: IconTextDirection.vertical,
+          context: context);
+    }*/
+  }
+
+  // 销毁
+  @override
+  void dispose() {
+    super.dispose();
+    print("-------------dispose-------------------");
+    super.dispose();
+    url = "";
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final GlobalKey webViewKey = GlobalKey();
-    final uri = Uri.parse('https://example.com/api/fetch?limit=10,20,30&max=100');
     InAppWebViewSettings settings = InAppWebViewSettings(
-      // isInspectable: kDebugMode,
       mediaPlaybackRequiresUserGesture: false,
       allowsInlineMediaPlayback: true,
-      // iframeAllow: "",
       iframeAllowFullscreen: true,
       mixedContentMode: MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
     );
 
-    void initState() {
-      super.initState();
-      if (argumentData && argumentData["url"]) {
-        url = argumentData["url"];
-        isRendered = true;
-      } else {
-        TDToast.showIconText('打开url参数不存在',
-            icon: TDIcons.check_circle,
-            direction: IconTextDirection.vertical,
-            context: context);
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("预览页面"),
+        title: Text(this.title),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.white,
@@ -58,35 +88,28 @@ class _PageFrameViewState extends State<PageFrameView> {
       body: Container(
         padding: EdgeInsets.all(10),
         child: Column(children: [
-          progress<0 ? LinearProgressIndicator(value: progress) : Container(),
           Expanded(
             child: InAppWebView(
-              key: webViewKey,
-              initialSettings: settings,
-              initialUrlRequest: URLRequest(url: WebUri(url)),
-              onLoadStart: (controller, url) {
-                print("onLoadStart 加载地址：$url");
-                setState(() {
-                  progress = 0.0;
-                });
-              },
-              onReceivedError: (controller, request, error) {
-                // pullToRefreshController?.endRefreshing();
-              },
-              onProgressChanged: (controller, progress) {
-                if (progress == 100) {
-                  pullToRefreshController?.endRefreshing();
-                }
-                setState(() {
-
-                });
-              },
-              onConsoleMessage: (controller, message) {
-                print("----------------consoleMessage------------");
-                print(message);
-              }
+                key: webViewKey,
+                initialSettings: settings,
+                initialUrlRequest: URLRequest(url: WebUri(this.url)),
+                onLoadStart: (controller, url) {
+                  print("onLoadStart 加载地址：$url");
+                },
+                onReceivedError: (controller, request, error) {
+                  print("-----------------------error: $error");
+                },
+                onProgressChanged: (controller, progress) {},
+                onConsoleMessage: (controller, message) {
+                  print("----------------consoleMessage------------");
+                  print(message);
+                },
+                onTitleChanged: (controller, title) {
+                  print("onTitleChanged: $title");
+                  this.title = title ?? '页面';
+                },
             ),
-          ),
+          )
         ]),
       ),
     );

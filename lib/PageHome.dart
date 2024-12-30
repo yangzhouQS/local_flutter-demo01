@@ -82,13 +82,43 @@ class _PageHomeState extends State<PageHome> {
 
           ]),
           SizedBox(height: 16),
+          // 水平排列
+          Flex(direction: Axis.horizontal, children: <Widget>[
+            TDButton(
+              text: "dev环境",
+              size: TDButtonSize.large,
+              type: TDButtonType.fill,
+              shape: TDButtonShape.rectangle,
+              theme: TDButtonTheme.primary,
+              icon: TDIcons.attach,
+              onTap: (){
+                print("dev环境");
+                Get.toNamed("/PageFrameView", arguments: {'url': 'http://dev.mctech.com'});
+              },
+            ),
+            SizedBox(width: 20),
+            TDButton(
+              onTap: () => {
+                print("test环境"),
+                Get.toNamed("/PageFrameView", arguments: {'url': 'https://test.mctech.com'})
+              },
+              text: 'test环境',
+              icon: TDIcons.app,
+              size: TDButtonSize.large,
+              type: TDButtonType.outline,
+              shape: TDButtonShape.rectangle,
+              theme: TDButtonTheme.primary,
+            ),
+
+          ]),
+          SizedBox(height: 16),
           Flex(direction: Axis.horizontal, children: <Widget>[
             TDButton(
               onTap: () => {
                 print("梦城"),
                 Get.toNamed("/PageFrameView", arguments: {'url': 'https://i.mctech.vip'}),
               },
-              text: 'dev运营平台',
+              text: '梦城平台',
               icon: TDIcons.app,
               size: TDButtonSize.large,
               type: TDButtonType.outline,
