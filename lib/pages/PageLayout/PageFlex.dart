@@ -10,7 +10,7 @@ class _PageFlexState extends State<PageFlex> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Page Flex 布局测试"),
+        child: Text("Page Flex 布局测试, 全屏展示"),
       ),
     );
   }

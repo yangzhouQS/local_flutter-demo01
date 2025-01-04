@@ -33,7 +33,6 @@ class _PageHomeState extends State<PageHome> {
 
   @override
   Widget build(BuildContext context) {
-
     _selectedIcon = Icon(
       TDIcons.app,
       size: 20,
@@ -61,16 +60,14 @@ class _PageHomeState extends State<PageHome> {
               type: TDButtonType.fill,
               shape: TDButtonShape.rectangle,
               theme: TDButtonTheme.primary,
-              onTap: () => {
-                print("flex布局测试"),
-                Get.toNamed("/PageFlex")
-              },
+              onTap: () => {print("flex布局测试"), Get.toNamed("/PageFlex")},
             ),
             SizedBox(width: 20),
             TDButton(
               onTap: () => {
                 print("dev运营平台"),
-                Get.toNamed("/PageFrameView", arguments: {'url': 'http://dev.yearrow.com'})
+                Get.toNamed("/PageFrameView",
+                    arguments: {'url': 'http://dev.yearrow.com'})
               },
               text: 'dev运营平台',
               icon: TDIcons.app,
@@ -79,7 +76,6 @@ class _PageHomeState extends State<PageHome> {
               shape: TDButtonShape.rectangle,
               theme: TDButtonTheme.primary,
             ),
-
           ]),
           SizedBox(height: 16),
           // 水平排列
@@ -91,16 +87,17 @@ class _PageHomeState extends State<PageHome> {
               shape: TDButtonShape.rectangle,
               theme: TDButtonTheme.primary,
               icon: TDIcons.attach,
-              onTap: (){
+              onTap: () {
                 print("dev环境");
-                Get.toNamed("/PageFrameView", arguments: {'url': 'http://dev.mctech.com'});
+                Get.toNamed("/PageFrameView",
+                    arguments: {'url': 'http://dev.mctech.vip'});
               },
             ),
             SizedBox(width: 20),
             TDButton(
-              onTap: () => {
-                print("test环境"),
-                Get.toNamed("/PageFrameView", arguments: {'url': 'https://test.mctech.com'})
+              onTap: () {
+                print("test环境");
+                Get.toNamed("/PageFrameView", arguments: {'url': 'https://test.mctech.vip'});
               },
               text: 'test环境',
               icon: TDIcons.app,
@@ -109,14 +106,14 @@ class _PageHomeState extends State<PageHome> {
               shape: TDButtonShape.rectangle,
               theme: TDButtonTheme.primary,
             ),
-
           ]),
           SizedBox(height: 16),
           Flex(direction: Axis.horizontal, children: <Widget>[
             TDButton(
               onTap: () => {
                 print("梦城"),
-                Get.toNamed("/PageFrameView", arguments: {'url': 'https://i.mctech.vip'}),
+                Get.toNamed("/PageFrameView",
+                    arguments: {'url': 'https://i.mctech.vip'}),
               },
               text: '梦城平台',
               icon: TDIcons.app,
@@ -129,7 +126,9 @@ class _PageHomeState extends State<PageHome> {
             TDButton(
               onTap: () => {
                 print("demo测试"),
-                Get.toNamed("/PageFrameView", arguments: {'url': 'http://www.yearrow.com/test-demo/index.html'}),
+                Get.toNamed("/PageFrameView", arguments: {
+                  'url': 'http://www.yearrow.com/test-demo/index.html'
+                }),
               },
               text: 'demo测试',
               icon: TDIcons.app,
@@ -139,6 +138,45 @@ class _PageHomeState extends State<PageHome> {
               theme: TDButtonTheme.primary,
             ),
           ]),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Flexible(
+                  flex: 1,
+                  child: TDButton(
+                    onTap: (){
+                      print("本地测试1");
+                      Get.toNamed("/PageFrameViewLocal", arguments: {
+                        'url': 'http://localhost:3800/'
+                      });
+                    },
+                    text: "本地测试1",
+                    icon: TDIcons.caret_down,
+                    size: TDButtonSize.large,
+                    type: TDButtonType.fill,
+                    shape: TDButtonShape.rectangle,
+                    theme: TDButtonTheme.light,
+                    isBlock: true,
+                  )),
+              Flexible(
+                  flex: 1,
+                  child: TDButton(
+                    onTap: (){
+                      print("本地测试2");
+                      Get.toNamed("/PageFrameView", arguments: {
+                        'url': 'http://yang-flutter.com/'
+                      });
+                    },
+                    text: "本地测试2",
+                    icon: TDIcons.upload,
+                    size: TDButtonSize.large,
+                    type: TDButtonType.outline,
+                    shape: TDButtonShape.rectangle,
+                    theme: TDButtonTheme.danger,
+                    isBlock: true,
+                  )),
+            ],
+          ),
           SizedBox(height: 16),
           Row(
             children: List.generate(3, (index) => getItem(index)),

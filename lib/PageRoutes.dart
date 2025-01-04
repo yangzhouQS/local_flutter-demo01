@@ -1,3 +1,4 @@
+import 'package:flutter_demo02/pages/PageFrameViewLocal/PageFrameViewLocal.dart';
 import 'package:get/get.dart';
 import './PageHome.dart';
 import './pages/PageLayout/PageFlex.dart';
@@ -12,5 +13,6 @@ class PageRouter {
     GetPage(name: "/login", page: () => PageLogin(), transition: Transition.leftToRight),
     GetPage(name: "/PageFlex", page: () => PageFlex(), transition: Transition.fadeIn),
     GetPage(name: "/PageFrameView", page: () => PageFrameView(), transition: Transition.fadeIn),
+    GetPage(name: "/PageFrameViewLocal", page: () => PageFrameViewLocal(), transition: Transition.fadeIn),
   ];
 }

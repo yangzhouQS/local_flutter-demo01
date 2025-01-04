@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +12,20 @@ import './PageHome.dart';
 import 'PageRoutes.dart';
 import './pages/PageNotFound/PageNotFound.dart';
 
+final InAppLocalhostServer localhostServer = new InAppLocalhostServer(documentRoot: "assets");
+
 void main() async {
   // 初始化flutter绑定，确保在调用任何Flutter API之前完成。
   WidgetsFlutterBinding.ensureInitialized();
+
+  // start the localhost server
+  if (!kIsWeb) {
+    await localhostServer.start();
+  }
+
+  if(Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
 
   if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);

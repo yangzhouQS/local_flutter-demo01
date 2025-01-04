@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>本地调试插件</title>
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>
+        // VConsole will be exported to `window.VConsole` by default.
+        var vConsole = new window.VConsole();
+    </script>
+</head>
+<body>
+<p>hello</p>
+<button onclick="printWindow()">获取window</button>
+<script>
+    function printWindow() {
+        console.log(window);
+
+        console.log('window.FlutterSDK')
+        console.log(window.FlutterSDK)
+
+        window.FlutterSDK.callHandler("myHandlerName", "hello from webview").then(res=>{
+            console.log("res = ",res)
+        }).catch(error=>{
+            console.log(error)
+        });
+    }
+</script>
+</body>
+</html>

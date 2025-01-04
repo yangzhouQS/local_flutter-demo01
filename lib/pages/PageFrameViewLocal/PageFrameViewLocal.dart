@@ -5,22 +5,28 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class PageFrameView extends StatefulWidget {
-  PageFrameView({Key? key}) : super(key: key);
+class PageFrameViewLocal extends StatefulWidget {
+  PageFrameViewLocal({Key? key}) : super(key: key);
 
   @override
-  _PageFrameViewState createState() => _PageFrameViewState();
+  PageFrameViewLocalState createState() => PageFrameViewLocalState();
 }
 
-class _PageFrameViewState extends State<PageFrameView> {
+class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   String title = "页面";
   bool isRendered = false;
   String url = "http://dev.yearrow.com";
   final argumentData = Get.arguments;
   InAppWebViewController? webViewController;
 
+  // 下拉刷新
+  PullToRefreshController? pullToRefreshController;
+  PullToRefreshSettings pullToRefreshSettings =
+      PullToRefreshSettings(color: Colors.red);
+  bool pullToRefreshEnabled = true;
+
   @override
-  void didUpdateWidget(PageFrameView oldWidget) {
+  void didUpdateWidget(PageFrameViewLocal oldWidget) {
     super.didUpdateWidget(oldWidget);
     isRendered = false;
     url = '';
@@ -98,39 +104,23 @@ class _PageFrameViewState extends State<PageFrameView> {
             child: InAppWebView(
               key: webViewKey,
               initialSettings: settings,
-              initialUrlRequest: URLRequest(url: WebUri(this.url)),
-              // initialUserScripts: UnmodifiableListView(),
-              onWebViewCreated: (controller)  {
-                webViewController = controller;
-
-                // 执行JS代码
-                controller.evaluateJavascript(source: "alert('JS Running')").then((result){
-                  debugPrint("JS Running: $result");
-                });
-                
-
-                // 以下是如何注册 JavaScript 处理程序的示例：
-                controller.addJavaScriptHandler(handlerName: "myHandlerName", callback: (arguments){
-                  print("arguments = $arguments");
-
-                  return {
-                    "data": "Hello, JS!",
-                    "status": "success",
-                  };
-                });
-              },
+              initialUrlRequest: null,
+              initialFile: "assets/html/demo.html",
+              onWebViewCreated: customWebViewCreated,
+              // 当 WebView 开始加载某个 URL 时触发该事件
               onLoadStart: (controller, url) {
                 print("onLoadStart 加载地址：$url");
               },
+
+              // 当 WebView 完成一个 URL 的加载时触发该事件；
+              onLoadStop: (controller, url) {},
+
               onReceivedError: (controller, request, error) {
                 print("-----------------------error: $error");
               },
               onProgressChanged: (controller, progress) {},
               onConsoleMessage: (controller, message) {
                 print("----------------consoleMessage------------$message");
-              },
-              onLoadStop: (controller, url) {
-                
               },
               onTitleChanged: (controller, title) {
                 print("onTitleChanged: $title");
@@ -141,5 +131,33 @@ class _PageFrameViewState extends State<PageFrameView> {
         ]),
       ),
     );
+  }
+
+  void customWebViewCreated(controller) async {
+    webViewController = controller;
+    // await InAppWebViewController.setJavaScriptBridgeName("");
+
+    // 执行JS代码
+    /*controller.evaluateJavascript(source: "alert('JS Running')").then((result){
+                debugPrint("JS Running: $result");
+              });*/
+
+    // 设置 JavaScript 桥接名称
+    InAppWebViewController.setJavaScriptBridgeName("FlutterSDK");
+
+    var bridgeName = await InAppWebViewController.getJavaScriptBridgeName();
+    print("bridgeName: $bridgeName");
+
+    // 以下是如何注册 JavaScript 处理程序的示例：
+    controller.addJavaScriptHandler(
+        handlerName: "myHandlerName",
+        callback: (JavaScriptHandlerFunctionData data) {
+          print("arguments data= $data");
+
+          return {
+            "data": "Hello, JS!",
+            "status": "success",
+          };
+        });
   }
 }
