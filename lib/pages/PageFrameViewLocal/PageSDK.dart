@@ -285,6 +285,9 @@ class PageSDK {
       };
     }
 
+    deviceData.remove('supported32BitAbis');
+    deviceData.remove('supported64BitAbis');
+    print("system info: $deviceData");
     return deviceData;
   }
 

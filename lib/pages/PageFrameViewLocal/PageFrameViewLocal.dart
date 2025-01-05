@@ -185,7 +185,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
         handlerName: "command",
 
         // 参数类型是个list
-        callback: (JavaScriptHandlerFunctionData argument) {
+        callback: (JavaScriptHandlerFunctionData argument)async {
           var params = argument.args;
           // print("arguments params= $params");
           // arguments params= JavaScriptHandlerFunctionData{args: [{callbackId: callback_0, command: getNavigationBarConfig, params: {}}], isMainFrame: true, origin: file:///, requestUrl: file:///android_asset/flutter_assets/assets/html/demo.html}
@@ -229,7 +229,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   result = this.pageSDK.closeBluetoothAdapter();
                   break;
                 case "getSystemInfo":
-                  result = this.pageSDK.getSystemInfo();
+                  result = await this.pageSDK.getSystemInfo();
                   break;
                 default:
               }
