@@ -1,33 +1,307 @@
 <!doctype html>
 <html lang="zh_CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>本地调试插件</title>
-    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-    <script>
-        // VConsole will be exported to `window.VConsole` by default.
-        var vConsole = new window.VConsole();
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>本地调试插件</title>
+  <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+  <script>
+      // VConsole will be exported to `window.VConsole` by default.
+      var vConsole = new window.VConsole();
+  </script>
+  <!--<script src="sdk/iwop-app.js"></script>-->
 </head>
 <body>
+
+<script>
+    var FlutterAPP = (function () {
+        'use strict';
+
+        var checkRule = function (rule) {
+            return true;
+        }
+        var Command = (function () {
+            function Command(cmd) {
+                this.callbackIdSequence = 0;
+                this.callbackMap = {};
+                this.eventMap = {};
+                this.from = "src";
+                this.version = Command.sVersion;
+                if (cmd) {
+                    this.callbackIdSequence = cmd.callbackIdSequence;
+                    this.callbackMap = cmd.callbackMap;
+                    this.eventMap = cmd.eventMap;
+                }
+            }
+
+            Command.prototype.test = function () {
+                return "test 测试正常"
+            }
+            Command.prototype.setNavigationBarConfig = function (options) {
+                var allowKeys = ["title", "style", "backgroundColor", "foregroundColor"];
+                var usableKeys = [];
+                // 此方法允许只传入部分属性,为了过滤自动生成的默认值,加入了usableKeys字段,记录外部传入的key
+                for (var key in options) {
+                    if (options.hasOwnProperty(key)) {
+                        if (allowKeys.indexOf(key) >= 0) {
+                            usableKeys.push(key);
+                        }
+                    }
+                }
+                options.usableKeys = usableKeys;
+                return this.exec("setNavigationBarConfig", options);
+            };
+            Command.prototype.getNavigationBarConfig = function (options) {
+                return this.exec("getNavigationBarConfig", options);
+            };
+
+
+            // ---------------------------------------------
+            Command.prototype.triggerAbort = function (callbackId) {
+                if (this.callbackMap[callbackId]) {
+                    this.internalExecWithCallbackId(callbackId, "taskAbort", {});
+                }
+            };
+            Command.prototype.triggerEvent = function (name, res) {
+                if (res === void 0) { res = true; }
+                var callback = this.eventMap[name];
+                if (callback && typeof callback === "function") {
+                    res = this.transParams(name, res);
+                    callback.call(this, res);
+                }
+            };
+            Command.prototype.triggerProgress = function (callbackId, progress, totalBytesSent, totalBytesExpectedToSend) {
+                var item = this.callbackMap[callbackId];
+                if (item && item.task && item.task instanceof CommandProgressTask) {
+                    item.task.triggerProgress(progress, totalBytesSent, totalBytesExpectedToSend);
+                }
+            };
+            Command.prototype.triggerSuccess = function (callbackId, data) {
+                console.log(`triggerSuccess = ${callbackId}`)
+                if (data === void 0) { data = true; }
+                var item = this.callbackMap[callbackId];
+                if (item) {
+                    delete this.callbackMap[callbackId];
+                    this.transCallbackData(item.cmd, data);
+                    item.success && item.success.call(this, data);
+                }
+                else {
+                    // var msg = this.getLocaleMessageConfig("ERR_COMMAND_EXEC_CALLBACK", [callbackId]);
+                    var msg = `"ERR_COMMAND_EXEC_CALLBACK", [${callbackId}]`;
+                    window.console.error(msg);
+                }
+                return 'ok'
+            };
+            Command.prototype.triggerFail = function (callbackId, key, values, res) {
+                var item = this.callbackMap[callbackId];
+                if (item) {
+                    delete this.callbackMap[callbackId];
+                    if ((typeof key) === "number") {
+                        key = Command.locale.getLocaleKeyByCode(key);
+                    }
+                    var locale_1 = this.getLocaleMessageConfig(key, values);
+                    item.fail && item.fail.call(this, locale_1.errMsg, locale_1, res);
+                }
+                else {
+                    var msg = this.getLocaleMessageConfig("ERR_COMMAND_EXEC_CALLBACK", [callbackId]);
+                    window.console.error(msg);
+                }
+            };
+            Command.prototype.getLocaleMessageConfig = function (key, values) {
+                var msgConfig = null;
+                key = key || "ERR_COMMAND_INVOKE";
+                msgConfig = Command.locale.getLocaleByKey(key);
+                values = values || ["-1"];
+                values.unshift(msgConfig.errMsg);
+                msgConfig.errMsg = format.apply(this, values);
+                return msgConfig;
+            };
+            Command.prototype.transCallbackData = function (cmd, data) {
+                if (!cmd || !data) {
+                    return;
+                }
+                switch (cmd) {
+                    case "getBluetoothDevices":
+                        this.transParamToArrayBuffer("advertisData", data.devices);
+                        break;
+                }
+            };
+
+            Command.prototype.transParams = function (cmd, params) {
+                if (!cmd) {
+                    return params;
+                }
+                var paramsToTrans = params;
+                switch (cmd) {
+                    case "writeBLECharacteristicValue":
+                        this.tranParamToNumberArray("value", paramsToTrans);
+                        break;
+                    case "onBluetoothDeviceFound":
+                        this.transParamToArrayBuffer("advertisData", paramsToTrans.devices);
+                        break;
+                    case "onBLECharacteristicValueChange":
+                        this.transParamToArrayBuffer("value", paramsToTrans);
+                }
+                return paramsToTrans;
+            };
+            Command.prototype.tranParamToNumberArray = function (key, params) {
+                if (!params || !params[key]) {
+                    return;
+                }
+                var arr = Array.prototype.slice.call(params[key]);
+                params[key] = arr;
+            };
+            Command.prototype.transParamToArrayBuffer = function (key, params) {
+                if (!params || params === null) {
+                    return;
+                }
+                if (params instanceof Array) {
+                    params.forEach(function (item) {
+                        if (item[key] && item[key] instanceof Array) {
+                            var bufferView = new Uint8Array(item[key]);
+                            item[key] = bufferView;
+                        }
+                    });
+                    return;
+                }
+                if (params[key] && params[key] instanceof Array) {
+                    var bufferView = new Uint8Array(params[key]);
+                    params[key] = bufferView;
+                }
+            };
+            Command.prototype.check = function (callbackId, cmd, params) {
+                return checkRule(cmd, params, (function (me, callbackId) {
+                    return function (key, values) {
+                        me.triggerFail(callbackId, key, values);
+                    };
+                })(this, callbackId));
+            };
+            Command.prototype.internalExecWithCallbackId = function (callbackId, cmd, params) {
+                console.log('callbackId-----------', callbackId, params)
+                var win = window;
+
+                if (this.check(callbackId, cmd, params)) {
+                    params = this.transParams(cmd, params);
+                    console.log("params", JSON.stringify(params))
+
+                    var message = {
+                        callbackId: callbackId,
+                        command: cmd,
+                        params: params,
+                    };
+                    win.SDKCommand.callHandler("command", message)
+                    /*var message = {
+                        callbackId: callbackId,
+                        command: cmd,
+                        params: params,
+                    };
+                    if (win.webkit && win.webkit.messageHandlers &&
+                        win.webkit.messageHandlers.command &&
+                        win.webkit.messageHandlers.command.postMessage) {
+                        // iOS
+                        win.webkit.messageHandlers.command.postMessage(message);
+                    } else if (win.SDKCommand && win.SDKCommand.postMessage) {
+                        // Android
+                        win.SDKCommand.postMessage(JSON.stringify(message));
+                    } else {
+                        // Others
+                        win.console.log(message);
+                        // this.triggerFail(message.callbackId, "ERR_SDKCommand_EXEC", null);
+                    }*/
+                }
+            };
+            Command.prototype.internalExec = function (cmd, options, task) {
+                var id = "callback_" + this.callbackIdSequence++;
+                if (task) {
+                    task.setCallbackId(id);
+                }
+                this.callbackMap[id] = {
+                    fail: options && options.fail,
+                    success: options && options.success,
+                    task: task,
+                    cmd: cmd
+                };
+                delete options.fail;
+                delete options.success;
+                this.internalExecWithCallbackId(id, cmd, options);
+            };
+            Command.prototype.exec = function (cmd, options) {
+                this.internalExec(cmd, options, null);
+                return this;
+            };
+            Command.prototype.execTask = function (cmd, options, task) {
+                this.internalExec(cmd, options, task);
+            };
+            Command.sVersion = "1.1.1.1";
+            return Command
+        }());
+
+        if (!window.flutterApp) {
+            window.flutterApp = new Command(window.flutterApp);
+            console.log(111, window.flutterApp)
+        }
+
+        return Command;
+    }());
+
+</script>
 <p>hello</p>
 <button onclick="printWindow()">获取window</button>
 <script>
+    console.log(flutterApp)
+    console.log(flutterApp.test());
+
+    var isFlutterInAppWebViewReady = false;
+    window.addEventListener("flutterInAppWebViewPlatformReady", function (event) {
+        isFlutterInAppWebViewReady = true;
+        console.log("webview 加载完成")
+    });
+
     function printWindow() {
         console.log(window);
 
-        console.log('window.FlutterSDK')
-        console.log(window.FlutterSDK)
+        console.log('window.SDKCommand');
+        console.log(window.SDKCommand);
 
-        window.FlutterSDK.callHandler("myHandlerName", "hello from webview").then(res=>{
-            console.log("res = ",res)
-        }).catch(error=>{
-            console.log(error)
-        });
+        console.log('flutterApp');
+        flutterApp.getNavigationBarConfig({
+            success: function (res) {
+                console.log('回调结果: res getNavigationBarConfig')
+                console.log(res)
+                console.log(typeof res)
+            },
+            fail: function (error) {
+                console.log("error", error)
+            }
+        })
+
+        /*iwop.getNavigationBarConfig({
+            success: function (res) {
+                console.log('getNavigationBarConfig', res)
+            },
+            fail: function (error) {
+                console.log("error", error)
+            }
+        })*/
+
+
+        /*if (window.SDKCommand) {
+            window.SDKCommand.callHandler("myHandlerName", "hello from webview").then(res => {
+                console.log("res = ", res)
+            }).catch(error => {
+                console.log(error)
+            });
+        }*/
     }
+
+    window.addEventListener("demoJavaScriptListener", (event) => {
+        console.log("My custom Event");
+        var map = JSON.parse(JSON.stringify(event.detail));
+        console.log("map", map);
+    });
 </script>
 </body>
 </html>
+

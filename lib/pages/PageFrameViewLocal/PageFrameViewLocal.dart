@@ -1,9 +1,10 @@
-import 'dart:collection';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo02/pages/PageFrameViewLocal/PageSDK.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'dart:convert' as convert;
 
 class PageFrameViewLocal extends StatefulWidget {
   PageFrameViewLocal({Key? key}) : super(key: key);
@@ -24,6 +25,8 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   PullToRefreshSettings pullToRefreshSettings =
       PullToRefreshSettings(color: Colors.red);
   bool pullToRefreshEnabled = true;
+
+  PageSDK pageSDK = PageSDK();
 
   @override
   void didUpdateWidget(PageFrameViewLocal oldWidget) {
@@ -88,15 +91,18 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
       allowsInlineMediaPlayback: true,
       iframeAllowFullscreen: true,
       mixedContentMode: MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+
+      // 设置为true以启用 JavaScript。默认值为 true
+      javaScriptBridgeEnabled: true,
+
+      // 为允许来源或将其设置为null，意味着它将允许每个来源
+      javaScriptBridgeOriginAllowList: {"*"},
     );
 
+    // 设置 JavaScript 桥接名称
+    InAppWebViewController.setJavaScriptBridgeName(this.pageSDK.bridgeName);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(this.title),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
-      ),
+      appBar: this.pageSDK.pageBar,
       body: Container(
         padding: EdgeInsets.all(10),
         child: Column(children: [
@@ -142,11 +148,27 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                 debugPrint("JS Running: $result");
               });*/
 
+    /*controller.evaluateJavascript(source: """
+         var event = new CustomEvent("demoJavaScriptListener", {detail: {a:1,b:2});
+        window.dispatchEvent(event); """);*/
+
     // 设置 JavaScript 桥接名称
-    InAppWebViewController.setJavaScriptBridgeName("FlutterSDK");
+    // InAppWebViewController.setJavaScriptBridgeName("FlutterSDK");
 
     var bridgeName = await InAppWebViewController.getJavaScriptBridgeName();
     print("bridgeName: $bridgeName");
+
+
+    /*if(defaultTargetPlatform!=TargetPlatform.android || await WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)){
+      print("支持");
+      await controller.addWebMessageListener(WebMessageListener(
+        jsObjectName: "myObject",
+        allowedOriginRules: Set.from(["*"]),
+        onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) {
+          replyProxy.postMessage("Got it!" as WebMessage);
+        },
+      ));
+    }*/
 
     // 以下是如何注册 JavaScript 处理程序的示例：
     controller.addJavaScriptHandler(
@@ -159,5 +181,66 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
             "status": "success",
           };
         });
+    controller.addJavaScriptHandler(
+        handlerName: "command",
+
+        // 参数类型是个list
+        callback: (JavaScriptHandlerFunctionData argument) {
+          var params = argument.args;
+          print("arguments params= $params");
+          // arguments params= JavaScriptHandlerFunctionData{args: [{callbackId: callback_0, command: getNavigationBarConfig, params: {}}], isMainFrame: true, origin: file:///, requestUrl: file:///android_asset/flutter_assets/assets/html/demo.html}
+          print("arguments params= $params");
+          // Map<String,dynamic> param = new Map<String,dynamic>();
+          var param = {};
+          if(params.length > 0 && params[0] != null){
+            param = params[0];
+          }
+
+          print(param);
+          print(param.runtimeType);
+
+          if(!param.isEmpty ){
+            var command = param["command"] ?? "";
+            var callbackId = param["callbackId"];
+            /*if(param["command"] in this.pageSDK){
+
+            }*/
+            print("command = $command");
+            /*if(this.pageSDK in command){
+
+            }*/
+
+            var result;
+            // this.pageSDK[command]();
+            try{
+              switch(command){
+                case "getNavigationBarConfig":
+                  result = this.pageSDK.getNavigationBarConfig();
+                  break;
+                default:
+              }
+              /*controller.evaluateJavascript(source: "window.flutterApp.triggerSuccess($callbackId,$result);").then((result){
+                debugPrint("JS Running: $result");
+              });*/
+              controller.evaluateJavascript(source: "window.flutterApp.test()").then((result){
+                debugPrint("JS Running: $result");
+              });
+
+              print("callbackId = $callbackId");
+              controller.evaluateJavascript(source: "window.flutterApp.triggerSuccess('$callbackId',${convert.jsonEncode(result)});").then((result){
+                debugPrint("JS Running: $result");
+              });
+              print("result = $result");
+            }catch(e){
+              print("error = $e");
+            }
+          }
+
+          return {
+            "data": "Hello, JS!",
+            "status": "success",
+          };
+        }
+    );
   }
 }

@@ -54,6 +54,12 @@ flutter:
     - assets/images/
     - assets/img/
     - assets/html/
+## 启用 mirrors
+#dart:
+#  vm:
+#    product: false
+#    experimental_features:
+#      - mirrors
 
 scripts:
   run: flutter run
