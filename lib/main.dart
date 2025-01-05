@@ -12,8 +12,6 @@ import './PageHome.dart';
 import 'PageRoutes.dart';
 import './pages/PageNotFound/PageNotFound.dart';
 
-
-
 final InAppLocalhostServer localhostServer = new InAppLocalhostServer(documentRoot: "assets");
 
 void main() async {
@@ -44,7 +42,6 @@ void main() async {
 
   // 存储文件的权限申请
   await Permission.storage.request();
-
 
   runApp(const MyApp());
 }

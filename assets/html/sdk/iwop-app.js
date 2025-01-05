@@ -975,7 +975,6 @@ var IWOP = (function () {
             return this.exec("setNavigationBarConfig", options);
         };
         Command.prototype.getNavigationBarConfig = function (options) {
-            debugger
             return this.exec("getNavigationBarConfig", options);
         };
         Command.prototype.getSystemInfo = function (options) {

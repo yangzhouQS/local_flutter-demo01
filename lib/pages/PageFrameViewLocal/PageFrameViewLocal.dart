@@ -60,6 +60,8 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
     this.isRendered = true;
     print("参数：url=================== $url");
 
+    this.pageSDK.test();
+
     /*if (argumentData && argumentData["url"]) {
       this.url = argumentData["url"];
       this.isRendered = true;
@@ -74,8 +76,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   // 销毁
   @override
   void dispose() {
-    super.dispose();
-    print("-------------dispose-------------------");
     super.dispose();
     url = "";
   }
@@ -227,6 +227,9 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   break;
                 case "closeBluetoothAdapter":
                   result = this.pageSDK.closeBluetoothAdapter();
+                  break;
+                case "getSystemInfo":
+                  result = this.pageSDK.getSystemInfo();
                   break;
                 default:
               }

@@ -41,7 +41,34 @@
             };
 
 
+            Command.prototype.setNavigationBarConfig = function (options) {
+                var allowKeys = ["title", "style", "backgroundColor", "foregroundColor"];
+                var usableKeys = [];
+                // 此方法允许只传入部分属性,为了过滤自动生成的默认值,加入了usableKeys字段,记录外部传入的key
+                for (var key in options) {
+                    if (options.hasOwnProperty(key)) {
+                        if (allowKeys.indexOf(key) >= 0) {
+                            usableKeys.push(key);
+                        }
+                    }
+                }
+                options.usableKeys = usableKeys;
+                return this.exec("setNavigationBarConfig", options);
+            };
+            Command.prototype.getNavigationBarConfig = function (options) {
+                return this.exec("getNavigationBarConfig", options);
+            };
 
+
+            Command.prototype.getSystemInfo = function (options) {
+                return this.exec("getSystemInfo", options);
+            };
+            Command.prototype.navigateToHome = function (options) {
+                return this.exec("navigateToHome", options);
+            };
+            Command.prototype.getLocation = function (options) {
+                return this.exec("getLocation", options);
+            };
             // -----------ble------bluetooth
             Command.prototype.closeBLEConnection = function (options) {
                 return this.exec("closeBLEConnection", options);
@@ -74,23 +101,7 @@
             };
             // --------------- end ble bluetooth -----------
 
-            Command.prototype.setNavigationBarConfig = function (options) {
-                var allowKeys = ["title", "style", "backgroundColor", "foregroundColor"];
-                var usableKeys = [];
-                // 此方法允许只传入部分属性,为了过滤自动生成的默认值,加入了usableKeys字段,记录外部传入的key
-                for (var key in options) {
-                    if (options.hasOwnProperty(key)) {
-                        if (allowKeys.indexOf(key) >= 0) {
-                            usableKeys.push(key);
-                        }
-                    }
-                }
-                options.usableKeys = usableKeys;
-                return this.exec("setNavigationBarConfig", options);
-            };
-            Command.prototype.getNavigationBarConfig = function (options) {
-                return this.exec("getNavigationBarConfig", options);
-            };
+
 
 
             // ---------------------------------------------
@@ -281,6 +292,7 @@
 <p>hello</p>
 <button onclick="printWindow()">获取window</button>
 <button onclick="getBluetoothDevices()">获取蓝牙</button>
+<button onclick="getSystemInfo()">获取设备信息</button>
 <script>
     console.log(flutterApp.test());
 
@@ -333,6 +345,19 @@
             },
             fail: function (error) {
                 console.log("error", error)
+            }
+        })
+    }
+
+
+    function getSystemInfo() {
+        flutterApp.getSystemInfo({
+            success: function (res) {
+                console.log('回调结果: res getSystemInfo')
+                console.log(res)
+            },
+            fail: function (error) {
+                console.log("getSystemInfo error", error)
             }
         })
     }
