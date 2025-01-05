@@ -14,19 +14,32 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- 蓝牙-->
-    <!-- google play store需要-->
-    <uses-feature
-        android:name="android.hardware.bluetooth_le"
-        android:required="false" />
+    <!-- Allow Bluetooth -->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 
-    <!--    Android 12-->
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+    <!-- New Bluetooth permissions in Android 12
+    https://developer.android.com/about/versions/12/features/bluetooth-permissions -->
+<!--    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />-->
+
+    <!-- android12 之后权限分开-->
+    <!-- android12 扫描周边设备需要该权限-->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <!-- android12 连接交互使用的权限-->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- android12 广播功能，让别人也能连接搞设备，一般和connect一起使用-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
 
-    <!--    Android 11 及以下-->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION " />
+    <!-- legacy for Android 11 or lower -->
+    <!-- android 6~12 之间使用该权限-->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <!-- android6之后需要使用蓝牙也要声明定位权限，且用户还要打开 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+
+    <!-- legacy for Android 9 or lower -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name="${applicationName}"

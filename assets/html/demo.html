@@ -38,7 +38,42 @@
 
             Command.prototype.test = function () {
                 return "test 测试正常"
-            }
+            };
+
+
+
+            // -----------ble------bluetooth
+            Command.prototype.closeBLEConnection = function (options) {
+                return this.exec("closeBLEConnection", options);
+            };
+            Command.prototype.createBLEConnection = function (options) {
+                return this.exec("createBLEConnection", options);
+            };
+            Command.prototype.getBLEDeviceCharacteristics = function (options) {
+                return this.exec("getBLEDeviceCharacteristics", options);
+            };
+            Command.prototype.getBLEDeviceServices = function (options) {
+                return this.exec("getBLEDeviceServices", options);
+            };
+            Command.prototype.onBLEConnectionStateChange = function (callback) {
+                if (typeof callback === "function") {
+                    this.eventMap["onBLEConnectionStateChange"] = callback;
+                }
+            };
+            Command.prototype.writeBLECharacteristicValue = function (options) {
+                return this.exec("writeBLECharacteristicValue", options);
+            };
+            Command.prototype.closeBluetoothAdapter = function (options) {
+                return this.exec("closeBluetoothAdapter", options);
+            };
+            Command.prototype.getBluetoothAdapterState = function (options) {
+                return this.exec("getBluetoothAdapterState", options);
+            };
+            Command.prototype.getBluetoothDevices = function (options) {
+                return this.exec("getBluetoothDevices", options);
+            };
+            // --------------- end ble bluetooth -----------
+
             Command.prototype.setNavigationBarConfig = function (options) {
                 var allowKeys = ["title", "style", "backgroundColor", "foregroundColor"];
                 var usableKeys = [];
@@ -79,7 +114,6 @@
                 }
             };
             Command.prototype.triggerSuccess = function (callbackId, data) {
-                console.log(`triggerSuccess = ${callbackId}`)
                 if (data === void 0) { data = true; }
                 var item = this.callbackMap[callbackId];
                 if (item) {
@@ -98,9 +132,9 @@
                 var item = this.callbackMap[callbackId];
                 if (item) {
                     delete this.callbackMap[callbackId];
-                    if ((typeof key) === "number") {
+                    /*if ((typeof key) === "number") {
                         key = Command.locale.getLocaleKeyByCode(key);
-                    }
+                    }*/
                     var locale_1 = this.getLocaleMessageConfig(key, values);
                     item.fail && item.fail.call(this, locale_1.errMsg, locale_1, res);
                 }
@@ -179,12 +213,10 @@
                 })(this, callbackId));
             };
             Command.prototype.internalExecWithCallbackId = function (callbackId, cmd, params) {
-                console.log('callbackId-----------', callbackId, params)
                 var win = window;
 
                 if (this.check(callbackId, cmd, params)) {
                     params = this.transParams(cmd, params);
-                    console.log("params", JSON.stringify(params))
 
                     var message = {
                         callbackId: callbackId,
@@ -240,7 +272,6 @@
 
         if (!window.flutterApp) {
             window.flutterApp = new Command(window.flutterApp);
-            console.log(111, window.flutterApp)
         }
 
         return Command;
@@ -249,8 +280,8 @@
 </script>
 <p>hello</p>
 <button onclick="printWindow()">获取window</button>
+<button onclick="getBluetoothDevices()">获取蓝牙</button>
 <script>
-    console.log(flutterApp)
     console.log(flutterApp.test());
 
     var isFlutterInAppWebViewReady = false;
@@ -260,9 +291,6 @@
     });
 
     function printWindow() {
-        console.log(window);
-
-        console.log('window.SDKCommand');
         console.log(window.SDKCommand);
 
         console.log('flutterApp');
@@ -294,6 +322,19 @@
                 console.log(error)
             });
         }*/
+    }
+
+    function getBluetoothDevices() {
+        flutterApp.getBluetoothDevices({
+            success: function (res) {
+                console.log('回调结果: res getBluetoothDevices')
+                console.log(res)
+                console.log(typeof res)
+            },
+            fail: function (error) {
+                console.log("error", error)
+            }
+        })
     }
 
     window.addEventListener("demoJavaScriptListener", (event) => {

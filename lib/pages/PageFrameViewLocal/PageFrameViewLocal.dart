@@ -23,7 +23,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   // 下拉刷新
   PullToRefreshController? pullToRefreshController;
   PullToRefreshSettings pullToRefreshSettings =
-      PullToRefreshSettings(color: Colors.red);
+  PullToRefreshSettings(color: Colors.red);
   bool pullToRefreshEnabled = true;
 
   PageSDK pageSDK = PageSDK();
@@ -187,52 +187,60 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
         // 参数类型是个list
         callback: (JavaScriptHandlerFunctionData argument) {
           var params = argument.args;
-          print("arguments params= $params");
+          // print("arguments params= $params");
           // arguments params= JavaScriptHandlerFunctionData{args: [{callbackId: callback_0, command: getNavigationBarConfig, params: {}}], isMainFrame: true, origin: file:///, requestUrl: file:///android_asset/flutter_assets/assets/html/demo.html}
-          print("arguments params= $params");
+          // print("arguments params= $params");
           // Map<String,dynamic> param = new Map<String,dynamic>();
           var param = {};
-          if(params.length > 0 && params[0] != null){
+          if (params.length > 0 && params[0] != null) {
             param = params[0];
           }
 
-          print(param);
-          print(param.runtimeType);
+          // print(param);
+          // print(param.runtimeType);
 
-          if(!param.isEmpty ){
+          if (!param.isEmpty) {
             var command = param["command"] ?? "";
-            var callbackId = param["callbackId"];
-            /*if(param["command"] in this.pageSDK){
+            var callbackId = param["callbackId"] ?? '';
+            var callbackParams = param["params"] as Map<String, dynamic>;
 
-            }*/
-            print("command = $command");
-            /*if(this.pageSDK in command){
+            print("-----------callbackParams------------");
+            print(callbackParams.runtimeType);
 
-            }*/
 
             var result;
-            // this.pageSDK[command]();
-            try{
-              switch(command){
+            try {
+              switch (command) {
                 case "getNavigationBarConfig":
                   result = this.pageSDK.getNavigationBarConfig();
                   break;
+                case "setNavigationBarConfig":
+                  result = this.pageSDK.setNavigationBarConfig(callbackParams);
+                  break;
+                case "setNavigationBarTitle":
+                  result = this.pageSDK.setNavigationBarTitle(callbackParams);
+                  break;
+                case "getBluetoothDevices":
+                  this.pageSDK.getBluetoothDevices((_scanResults){
+                    result = _scanResults;
+                  });
+                  break;
+                case "closeBluetoothAdapter":
+                  result = this.pageSDK.closeBluetoothAdapter();
+                  break;
                 default:
               }
-              /*controller.evaluateJavascript(source: "window.flutterApp.triggerSuccess($callbackId,$result);").then((result){
-                debugPrint("JS Running: $result");
-              });*/
-              controller.evaluateJavascript(source: "window.flutterApp.test()").then((result){
-                debugPrint("JS Running: $result");
-              });
 
               print("callbackId = $callbackId");
-              controller.evaluateJavascript(source: "window.flutterApp.triggerSuccess('$callbackId',${convert.jsonEncode(result)});").then((result){
-                debugPrint("JS Running: $result");
-              });
+              controller.evaluateJavascript(
+                  source: "window.flutterApp.triggerSuccess('$callbackId',${convert
+                      .jsonEncode(result)});");
               print("result = $result");
-            }catch(e){
+            } catch (e) {
               print("error = $e");
+              controller.evaluateJavascript(
+                  source: "window.flutterApp.triggerFail('$callbackId',${convert
+                      .jsonEncode(e)});");
             }
           }
 
