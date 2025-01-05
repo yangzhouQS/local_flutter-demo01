@@ -6,12 +6,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_blue/flutter_blue.dart';
-//
-// FlutterBlue flutterBlue = FlutterBlue.instance;
-
 
 // 蓝牙扫描
 late StreamSubscription<List<ScanResult>> _scanRetsSubscription;
@@ -287,8 +282,20 @@ class PageSDK {
 
     deviceData.remove('supported32BitAbis');
     deviceData.remove('supported64BitAbis');
+
     print("system info: $deviceData");
     return deviceData;
+  }
+
+  chooseImage(Map<String, dynamic> callbackParams) async {
+    /*XFile? file = await ImagePicker().pickImage(
+      source: ImageSource.gallery, // 图库选择
+      maxWidth: 1000.0, // 设置图片最大宽度，间接压缩了图片的体积
+    );
+
+    /// 选取图片失败file为null，要注意判断下。
+    /// 获取图片路径后可以上传到服务器上
+    print('${file?.path}');*/
   }
 
   test(){

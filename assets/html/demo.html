@@ -40,6 +40,84 @@
                 return "test 测试正常"
             };
 
+            // -----------share------
+            Command.prototype.showShareModal = function (options) {
+                return this.exec("showShareModal", options);
+            };
+            // -----------media------audio
+            Command.prototype.playVoice = function (options) {
+                return this.exec("playVoice", options);
+            };
+            Command.prototype.pauseVoice = function (options) {
+                return this.exec("pauseVoice", options);
+            };
+            Command.prototype.stopVoice = function (options) {
+                return this.exec("stopVoice", options);
+            };
+            Command.prototype.startRecord = function (options) {
+                return this.exec("startRecord", options);
+            };
+            Command.prototype.stopRecord = function (options) {
+                return this.exec("stopRecord", options);
+            };
+            Command.prototype.uploadVoice = function (options) {
+                var task = new UploadTask(this);
+                this.execTask("uploadVoice", options, task);
+                return task;
+            };
+            Command.prototype.onVoicePlayEnd = function (callback) {
+                if (typeof callback === "function") {
+                    this.eventMap["onVoicePlayEnd"] = callback;
+                }
+            };
+            Command.prototype.onVoiceRecordEnd = function (callback) {
+                if (typeof callback === "function") {
+                    this.eventMap["onVoiceRecordEnd"] = callback;
+                }
+            };
+            Command.prototype.chooseImage = function (options) {
+                return this.exec("chooseImage", options);
+            };
+            Command.prototype.chooseAttachments = function (options) {
+                return this.exec("chooseAttachments", options);
+            };
+            Command.prototype.signUp = function (options) {
+                return this.exec("signUp", options);
+            };
+            Command.prototype.previewImage = function (options) {
+                return this.exec("previewImage", options);
+            };
+            Command.prototype.getImageInfo = function (options) {
+                return this.exec("getImageInfo", options);
+            };
+            Command.prototype.saveImageToPhotosAlbum = function (options) {
+                return this.exec("saveImageToPhotosAlbum", options);
+            };
+            Command.prototype.scanCode = function (options) {
+                return this.exec("scanCode", options);
+            };
+            Command.prototype.showHikVision = function (options) {
+                return this.exec("showHikVision", options);
+            };
+            Command.prototype.showHikVisionV2 = function (options) {
+                return this.exec("showHikVisionV2", options);
+            };
+            Command.prototype.showHikVisionV3 = function (options) {
+                return this.exec("showHikVisionV3", options);
+            };
+            Command.prototype.checkSession = function (options) {
+                return this.exec("checkSession", options);
+            };
+            Command.prototype.getUserInfo = function (options) {
+                return this.exec("getUserInfo", options);
+            };
+            Command.prototype.setNavigationBarTitle = function (options) {
+                return this.exec("setNavigationBarTitle", options);
+            };
+            Command.prototype.setCameraTemplate = function (options) {
+                return this.exec("setCameraTemplate", options);
+            };
+
 
             Command.prototype.setNavigationBarConfig = function (options) {
                 var allowKeys = ["title", "style", "backgroundColor", "foregroundColor"];
@@ -293,14 +371,29 @@
 <button onclick="printWindow()">获取window</button>
 <button onclick="getBluetoothDevices()">获取蓝牙</button>
 <button onclick="getSystemInfo()">获取设备信息</button>
+<button onclick="chooseImage()">选择照片</button>
+
+<br>
+
+<button onclick="clean()">清空</button>
+
+<div id="container">
+
+</div>
 <script>
     console.log(flutterApp.test());
+
+    const container = document.getElementById('container');
 
     var isFlutterInAppWebViewReady = false;
     window.addEventListener("flutterInAppWebViewPlatformReady", function (event) {
         isFlutterInAppWebViewReady = true;
         console.log("webview 加载完成")
     });
+
+    function clean() {
+        container.innerText = '';
+    }
 
     function printWindow() {
         console.log(window.SDKCommand);
@@ -354,6 +447,18 @@
         flutterApp.getSystemInfo({
             success: function (res) {
                 console.log('回调结果: res getSystemInfo')
+                console.log(res)
+                container.innerText = JSON.stringify(res,null, 2);
+            },
+            fail: function (error) {
+                console.log("getSystemInfo error", error)
+            }
+        })
+    }
+    function chooseImage() {
+        flutterApp.chooseImage({
+            success: function (res) {
+                console.log('回调结果: res chooseImage')
                 console.log(res)
             },
             fail: function (error) {

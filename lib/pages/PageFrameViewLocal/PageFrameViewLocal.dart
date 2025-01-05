@@ -5,6 +5,8 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:convert' as convert;
+// import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
 
 class PageFrameViewLocal extends StatefulWidget {
   PageFrameViewLocal({Key? key}) : super(key: key);
@@ -83,6 +85,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey webViewKey = GlobalKey();
+
     InAppWebViewSettings settings = InAppWebViewSettings(
       // 设置true为允许水平滑动手势触发前后列表导航。默认值为true
       allowsBackForwardNavigationGestures: true,
@@ -230,6 +233,14 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   break;
                 case "getSystemInfo":
                   result = await this.pageSDK.getSystemInfo();
+
+                  break;
+                case "chooseImage":
+                  // result = await this.pageSDK.chooseImage(callbackParams);
+
+                  // List<AssetEntity>? result = await AssetPicker.pickAssets(context);
+                  print("entity = --------------");
+
                   break;
                 default:
               }
