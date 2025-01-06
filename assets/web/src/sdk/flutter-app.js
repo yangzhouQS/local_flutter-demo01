@@ -162,8 +162,22 @@ var FlutterAPP = (function () {
         };
         // --------------- end ble bluetooth -----------
 
-
-
+        Command.prototype.showModal = function (options) {
+            return this.exec("showModal", options);
+        };
+        Command.prototype.showToast = function (options) {
+            return this.exec("showToast", options);
+        };
+        // ----------other-------------------------------
+        Command.prototype.getClipboardData = function (options) {
+            return this.exec("getClipboardData", options);
+        };
+        Command.prototype.setClipboardData = function (options) {
+            return this.exec("setClipboardData", options);
+        };
+        Command.prototype.openRoutePlanning = function (options) {
+            return this.exec("openRoutePlanning", options);
+        };
 
         // ---------------------------------------------
         Command.prototype.triggerAbort = function (callbackId) {

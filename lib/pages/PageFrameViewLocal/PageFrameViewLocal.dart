@@ -8,7 +8,6 @@ import 'dart:convert' as convert;
 import 'package:get/get.dart';
 // import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-
 class PageFrameViewLocal extends StatefulWidget {
   PageFrameViewLocal({Key? key}) : super(key: key);
 
@@ -26,7 +25,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   // 下拉刷新
   PullToRefreshController? pullToRefreshController;
   PullToRefreshSettings pullToRefreshSettings =
-  PullToRefreshSettings(color: Colors.red);
+      PullToRefreshSettings(color: Colors.red);
   bool pullToRefreshEnabled = true;
 
   PageSDK pageSDK = PageSDK();
@@ -58,7 +57,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
 
     this.url = argumentData["url"] ?? "";
     this.isRendered = true;
-
 
     this.pageSDK.test();
 
@@ -112,7 +110,8 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
               key: webViewKey,
               initialSettings: settings,
               initialUrlRequest: null,
-              initialFile: this.url, // "assets/html/demo.html",
+              initialFile: this.url,
+              // "assets/html/demo.html",
               onWebViewCreated: customWebViewCreated,
               // 当 WebView 开始加载某个 URL 时触发该事件
               onLoadStart: (controller, url) {
@@ -159,7 +158,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
     var bridgeName = await InAppWebViewController.getJavaScriptBridgeName();
     print("bridgeName: $bridgeName");
 
-
     /*if(defaultTargetPlatform!=TargetPlatform.android || await WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)){
       print("支持");
       await controller.addWebMessageListener(WebMessageListener(
@@ -186,7 +184,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
         handlerName: "command",
 
         // 参数类型是个list
-        callback: (JavaScriptHandlerFunctionData argument)async {
+        callback: (JavaScriptHandlerFunctionData argument) async {
           var params = argument.args;
           // print("arguments params= $params");
           // arguments params= JavaScriptHandlerFunctionData{args: [{callbackId: callback_0, command: getNavigationBarConfig, params: {}}], isMainFrame: true, origin: file:///, requestUrl: file:///android_asset/flutter_assets/assets/html/demo.html}
@@ -208,7 +206,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
             print("-----------callbackParams------------");
             print(callbackParams.runtimeType);
 
-
             var result;
             try {
               switch (command) {
@@ -222,7 +219,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   result = this.pageSDK.setNavigationBarTitle(callbackParams);
                   break;
                 case "getBluetoothDevices":
-                  this.pageSDK.getBluetoothDevices((_scanResults){
+                  this.pageSDK.getBluetoothDevices((_scanResults) {
                     result = _scanResults;
                   });
                   break;
@@ -240,19 +237,72 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   print("entity = --------------");
 
                   break;
+
+                // ----------------- UI -----------------
+                case "showToast":
+                  var text = callbackParams["text"] ?? "提示";
+                  TDToast.showText(text, context: context);
+                  result = true;
+                  break;
+                case "showModal":
+                  var type = callbackParams["type"] ?? "confirm";
+                  var title = callbackParams["title"] ?? "标题";
+                  var content = callbackParams["content"] ?? "";
+
+                  var confirmText = callbackParams["confirmText"] ?? "确定";
+                  var cancelText = callbackParams["cancelText"] ?? "取消";
+
+                  if (type == "confirm") {
+                    showGeneralDialog(
+                      context: context,
+                      pageBuilder: (BuildContext buildContext,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return TDConfirmDialog(
+                          title: title,
+                          content: content,
+                          contentMaxHeight: 300,
+                          buttonText: confirmText,
+                        );
+                      },
+                    );
+                  }else if(type == "alert"){
+                    showGeneralDialog(
+                      context: context,
+                      pageBuilder: (BuildContext buildContext,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return TDAlertDialog(
+                          title: title,
+                          content: content,
+                          leftBtn: TDDialogButtonOptions(title: cancelText, action: (){
+                            print('leftBtn click');
+                            Navigator.pop(context);
+                          }),
+                          rightBtn: TDDialogButtonOptions(title: confirmText, action: (){
+                            print('rightBtn click');
+                            Navigator.pop(context);
+                          })
+                        );
+                      },
+                    );
+                  }
+
+                  result = true;
+                  break;
                 default:
               }
 
               print("callbackId = $callbackId");
               controller.evaluateJavascript(
-                  source: "window.flutterApp.triggerSuccess('$callbackId',${convert
-                      .jsonEncode(result)});");
+                  source:
+                      "window.flutterApp.triggerSuccess('$callbackId',${convert.jsonEncode(result)});");
               print("result = $result");
             } catch (e) {
               print("error = $e");
               controller.evaluateJavascript(
-                  source: "window.flutterApp.triggerFail('$callbackId',${convert
-                      .jsonEncode(e)});");
+                  source:
+                      "window.flutterApp.triggerFail('$callbackId',${convert.jsonEncode(e)});");
             }
           }
 
@@ -260,7 +310,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
             "data": "Hello, JS!",
             "status": "success",
           };
-        }
-    );
+        });
   }
 }
