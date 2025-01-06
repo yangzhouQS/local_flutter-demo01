@@ -5,6 +5,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:convert' as convert;
+import 'package:get/get.dart';
 // import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 
@@ -18,7 +19,7 @@ class PageFrameViewLocal extends StatefulWidget {
 class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   String title = "页面";
   bool isRendered = false;
-  String url = "http://dev.yearrow.com";
+  String url = "";
   final argumentData = Get.arguments;
   InAppWebViewController? webViewController;
 
@@ -52,15 +53,12 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   // 创建
   @override
   void initState() {
-    print("-------------initState-------------------");
     super.initState();
-    print("参数：name===================");
     print(argumentData);
-    print("url=================== $url");
 
     this.url = argumentData["url"] ?? "";
     this.isRendered = true;
-    print("参数：url=================== $url");
+
 
     this.pageSDK.test();
 
@@ -114,7 +112,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
               key: webViewKey,
               initialSettings: settings,
               initialUrlRequest: null,
-              initialFile: "assets/html/demo.html",
+              initialFile: this.url, // "assets/html/demo.html",
               onWebViewCreated: customWebViewCreated,
               // 当 WebView 开始加载某个 URL 时触发该事件
               onLoadStart: (controller, url) {

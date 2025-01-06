@@ -1,0 +1,30 @@
+{
+  "name": "yang-flutter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:build": "vite build -w --mode dev",
+    "build:dev": "vite build",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@nutui/nutui": "^4.3.13",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue-jsx": "^4.1.1",
+    "@vue/tsconfig": "^0.7.0",
+    "less": "^4.2.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.5",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
+    "vite-plugin-html-inline-sources": "^0.0.3",
+    "vite-plugin-singlefile": "^2.1.0",
+    "vue-tsc": "^2.2.0"
+  }
+}

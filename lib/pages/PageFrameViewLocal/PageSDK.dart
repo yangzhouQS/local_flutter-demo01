@@ -7,6 +7,7 @@ import 'dart:developer' as developer;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 // 蓝牙扫描
 late StreamSubscription<List<ScanResult>> _scanRetsSubscription;
@@ -17,16 +18,24 @@ typedef BarConfig(String title, String backgroundColor, String foregroundColor,
 
 class PageSDK {
   String bridgeName = "SDKCommand";
-  Text barTitle = Text("");
+  String titleText = "hello";
 
   AppBar pageBar = AppBar(
     centerTitle: true,
     title: const Text("hello"),
   );
 
+  TDNavBar tdNavBar = TDNavBar(
+    height: 48,
+    titleFontWeight: FontWeight.w600,
+    title: "hello",
+    screenAdaptation: false,
+    useDefaultBack: true,
+  );
+
   Map<String, dynamic> getNavigationBarConfig() {
     return {
-      "title": this.pageBar.title,
+      "title": "测试的hello",//this.pageBar.title,
       "backgroundColor": 'a', // ColorUtils.color2HEX(this.pageBar.backgroundColor!),
       "foregroundColor": 'a', // ColorUtils.color2HEX(this.pageBar.foregroundColor!),
       "toolbarOpacity": this.pageBar.toolbarOpacity

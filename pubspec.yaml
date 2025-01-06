@@ -57,6 +57,8 @@ flutter:
     - assets/images/
     - assets/img/
     - assets/html/
+    - assets/web-dist/
+#    - assets/web-dist/assets/
 ## 启用 mirrors
 #dart:
 #  vm:

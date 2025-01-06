@@ -138,7 +138,7 @@ class _PageHomeState extends State<PageHome> {
               theme: TDButtonTheme.primary,
             ),
           ]),
-          SizedBox(height: 16),
+          SizedBox(height: 20),
           Row(
             children: [
               Flexible(
@@ -147,7 +147,7 @@ class _PageHomeState extends State<PageHome> {
                     onTap: (){
                       print("本地测试1");
                       Get.toNamed("/PageFrameViewLocal", arguments: {
-                        'url': 'http://localhost:3800/'
+                        'url': "assets/html/demo.html"
                       });
                     },
                     text: "本地测试1",
@@ -162,12 +162,12 @@ class _PageHomeState extends State<PageHome> {
                   flex: 1,
                   child: TDButton(
                     onTap: (){
-                      print("本地测试2");
-                      Get.toNamed("/PageFrameView", arguments: {
-                        'url': 'http://yang-flutter.com/'
+                      print("NutUi测试页面");
+                      Get.toNamed("/PageFrameViewLocal", arguments: {
+                        'url': "assets/web-dist/index.html"
                       });
                     },
-                    text: "本地测试2",
+                    text: "NutUi",
                     icon: TDIcons.upload,
                     size: TDButtonSize.large,
                     type: TDButtonType.outline,

@@ -104,9 +104,9 @@ class _PageFrameViewState extends State<PageFrameView> {
                 webViewController = controller;
 
                 // 执行JS代码
-                controller.evaluateJavascript(source: "alert('JS Running')").then((result){
+                /*controller.evaluateJavascript(source: "alert('JS Running')").then((result){
                   debugPrint("JS Running: $result");
-                });
+                });*/
                 
 
                 // 以下是如何注册 JavaScript 处理程序的示例：

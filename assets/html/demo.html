@@ -444,6 +444,9 @@
 
 
     function getSystemInfo() {
+        console.log(flutterApp)
+        console.log(flutterApp.getSystemInfo)
+        /*
         flutterApp.getSystemInfo({
             success: function (res) {
                 console.log('回调结果: res getSystemInfo')
@@ -453,7 +456,7 @@
             fail: function (error) {
                 console.log("getSystemInfo error", error)
             }
-        })
+        })*/
     }
     function chooseImage() {
         flutterApp.chooseImage({
