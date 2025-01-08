@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:get/get.dart';
 import './PageHome.dart';
 import 'PageRoutes.dart';
 import './pages/PageNotFound/PageNotFound.dart';
+
 
 final InAppLocalhostServer localhostServer = new InAppLocalhostServer(documentRoot: "assets");
 
@@ -44,14 +44,6 @@ void main() async {
   await Permission.storage.request();
 
 
-  // 定位权限申请
-  var status = await Permission.location.status;
-  if (!status.isGranted) {
-    await Permission.location.request();
-  }else{
-    print("定位权限已开启");
-  }
-
   runApp(const MyApp());
 }
 
@@ -60,20 +52,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-    [Permission.bluetoothScan, Permission.bluetoothConnect, Permission.bluetooth].request().then((status) {
-      print(status);
-      //只会有一个弹窗，android端多个权限，但一般一般显示了一个就结束了，主要看ios的
-      //android端注意定位权限, Permission.locationWhenInUse 即可
-      if (status[Permission.bluetooth] != PermissionStatus.granted) {
-        print("没有蓝牙权限"); //这一个是都有的，可以用这个判断，当然最好分平台判断
-        // TDToast.showText('没有蓝牙权限', context: context);
-      }else{
-        // TDToast.showIconText('蓝牙权限已开启', icon: TDIcons.check_circle, context: context);
-      }
-    });
-
     return GetMaterialApp(
       title: '演示应用',
       theme: ThemeData(
@@ -101,13 +79,8 @@ class MyApp extends StatelessWidget {
       // 设置找不到路由时的页面
       unknownRoute: GetPage(name: "/404", page: () => PageNotFound()),
 
-      /*routingCallback: (value) => {
-        print("routingCallback: ${value}")
-      },*/
-
       // 存在问题, 所有页面在应用启动时会全部初始化好
       getPages: PageRouter.routers,
     );
   }
 }
-

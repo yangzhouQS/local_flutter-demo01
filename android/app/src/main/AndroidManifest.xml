@@ -20,10 +20,6 @@
     <!-- Allow Bluetooth -->
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 
-    <!-- New Bluetooth permissions in Android 12
-    https://developer.android.com/about/versions/12/features/bluetooth-permissions -->
-<!--    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />-->
-
     <!-- android12 之后权限分开-->
     <!-- android12 扫描周边设备需要该权限-->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
@@ -34,7 +30,7 @@
 
     <!-- legacy for Android 11 or lower -->
     <!-- android 6~12 之间使用该权限-->
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <!-- android6之后需要使用蓝牙也要声明定位权限，且用户还要打开 -->

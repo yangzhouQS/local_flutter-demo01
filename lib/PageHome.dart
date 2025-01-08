@@ -124,11 +124,9 @@ class _PageHomeState extends State<PageHome> {
             ),
             SizedBox(width: 20),
             TDButton(
-              onTap: () => {
-                print("demo测试"),
-                Get.toNamed("/PageFrameView", arguments: {
-                  'url': 'http://www.yearrow.com/test-demo/index.html'
-                }),
+              onTap: (){
+                print("demo测试");
+                Get.toNamed("/PageDemo");
               },
               text: 'demo测试',
               icon: TDIcons.app,

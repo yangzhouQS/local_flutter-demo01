@@ -4,6 +4,7 @@ import './PageHome.dart';
 import './pages/PageLayout/PageFlex.dart';
 import './pages/PageNotFound/PageNotFound.dart';
 import './pages/PageLogin/PageLogin.dart';
+import 'pages/PageDemo/PageDemo.dart';
 import 'pages/PageFrameView/PageFrameView.dart';
 
 class PageRouter {
@@ -14,5 +15,6 @@ class PageRouter {
     GetPage(name: "/PageFlex", page: () => PageFlex(), transition: Transition.fadeIn),
     GetPage(name: "/PageFrameView", page: () => PageFrameView(), transition: Transition.fadeIn),
     GetPage(name: "/PageFrameViewLocal", page: () => PageFrameViewLocal(), transition: Transition.fadeIn),
+    GetPage(name: "/PageDemo", page: () => PageDemo(), transition: Transition.fadeIn),
   ];
 }

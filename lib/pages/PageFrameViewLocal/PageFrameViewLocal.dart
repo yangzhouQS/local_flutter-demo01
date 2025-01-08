@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_demo02/pages/PageFrameViewLocal/PageSDK.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:get/get.dart';
@@ -42,6 +43,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
 
   PageSDK pageSDK = PageSDK();
 
+
   @override
   void didUpdateWidget(PageFrameViewLocal oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -71,16 +73,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
     this.isRendered = true;
 
     this.pageSDK.test();
-
-    /*if (argumentData && argumentData["url"]) {
-      this.url = argumentData["url"];
-      this.isRendered = true;
-    } else {
-      TDToast.showIconText('打开url参数不存在',
-          icon: TDIcons.check_circle,
-          direction: IconTextDirection.vertical,
-          context: context);
-    }*/
   }
 
   // 销毁
