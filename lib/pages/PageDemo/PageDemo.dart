@@ -100,6 +100,7 @@ class _PageDemoState extends State<PageDemo> {
     }
   }
 
+  // https://ithelp.ithome.com.tw/articles/10346918
   Future<void> _startScan() async {
     if (_adapterState != BluetoothAdapterState.on) {
       print('蓝牙未开启');
@@ -134,6 +135,7 @@ class _PageDemoState extends State<PageDemo> {
     setState(() {
       _isScanning = false;
     });
+    TDToast.showText('停止扫描', context: context);
     print('停止扫描');
   }
 
@@ -186,7 +188,9 @@ class _PageDemoState extends State<PageDemo> {
       )),*/
       floatingActionButton: FloatingActionButton(
         onPressed: _isScanning ? _stopScan : _startScan,
-        child: Icon(_isScanning ? Icons.stop : Icons.search),
+        child: Icon(
+          _isScanning ? Icons.stop : Icons.search,
+        ),
       ),
     );
   }
