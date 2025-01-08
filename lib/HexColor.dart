@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 
 extension ColorUtils on Color {
   // 转换Color对象为8位16进制字符串
-  String toHex8({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+  String toHex8({bool leadingHashSign = true}) =>
+      '${leadingHashSign ? '#' : ''}'
       '${alpha.toRadixString(16).padLeft(2, '0')}'
       '${red.toRadixString(16).padLeft(2, '0')}'
       '${green.toRadixString(16).padLeft(2, '0')}'
       '${blue.toRadixString(16).padLeft(2, '0')}';
 
   // 转换Color对象为6位16进制字符串
-  String toHex6({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+  String toHex6({bool leadingHashSign = true}) =>
+      '${leadingHashSign ? '#' : ''}'
       '${red.toRadixString(16).padLeft(2, '0')}'
       '${green.toRadixString(16).padLeft(2, '0')}'
       '${blue.toRadixString(16).padLeft(2, '0')}';
-
 
   /// 十六进制颜色，
   /// hex, 十六进制值，例如：0xffffff,
@@ -80,4 +81,9 @@ class HexColor {
     }
     return Color(int.parse(hex, radix: 16));
   }
+/*
+  // 将十六进制字符串转换为Color对象
+  static Color hexToColor(String code) {
+    return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  }*/
 }

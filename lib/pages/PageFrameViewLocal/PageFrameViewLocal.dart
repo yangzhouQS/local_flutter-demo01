@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo02/pages/PageFrameViewLocal/PageSDK.dart';
@@ -8,9 +7,7 @@ import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:convert' as convert;
 import 'package:get/get.dart';
-
 import '../../HexColor.dart';
-// import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PageFrameViewLocal extends StatefulWidget {
   PageFrameViewLocal({Key? key}) : super(key: key);
@@ -20,16 +17,22 @@ class PageFrameViewLocal extends StatefulWidget {
 }
 
 class PageFrameViewLocalState extends State<PageFrameViewLocal> {
-  String title = "页面";
+  String barTitle = "";
   bool isRendered = false;
   String url = "";
+
+  // 导航栏背景色
   Color backgroundColor = HexColor.fromHex("#ffffff");
+  // 设置AppBar的前景颜色，例如标题、图标等
+  Color foregroundColor = Colors.white;
   final argumentData = Get.arguments;
   InAppWebViewController? webViewController;
 
   // 创建一个StreamController来控制标题的更新
   final StreamController<String> _titleStreamController =
       StreamController<String>();
+
+  TextStyle titleTextStyle = TextStyle(color: Colors.white);
 
   // 下拉刷新
   PullToRefreshController? pullToRefreshController;
@@ -111,9 +114,8 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
     InAppWebViewController.setJavaScriptBridgeName(this.pageSDK.bridgeName);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: HexColor.fromHex("#333333"),
-        // Theme.of(context).colorScheme.inversePrimary,
-        // title: Text(widget.title),
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
         // 使用StreamBuilder来构建AppBar的标题
         title: StreamBuilder<String>(
           stream: _titleStreamController.stream,
@@ -122,8 +124,8 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
             print("snapshot.data: ${snapshot.data} url: $url");
             // 当有新的数据时，更新标题
             return Text(
-              snapshot.data ?? url,
-              style: TextStyle(color: Colors.red),
+                snapshot.data ?? url,
+                style: titleTextStyle // TextStyle(color: Colors.white),
             );
           },
         ),
@@ -156,7 +158,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
               },
               onTitleChanged: (controller, title) {
                 print("onTitleChanged: $title");
-                this.title = title ?? '页面';
               },
             ),
           )
@@ -183,17 +184,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
 
     var bridgeName = await InAppWebViewController.getJavaScriptBridgeName();
     print("bridgeName: $bridgeName");
-
-    /*if(defaultTargetPlatform!=TargetPlatform.android || await WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)){
-      print("支持");
-      await controller.addWebMessageListener(WebMessageListener(
-        jsObjectName: "myObject",
-        allowedOriginRules: Set.from(["*"]),
-        onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) {
-          replyProxy.postMessage("Got it!" as WebMessage);
-        },
-      ));
-    }*/
 
     // 以下是如何注册 JavaScript 处理程序的示例：
     controller.addJavaScriptHandler(
@@ -236,26 +226,40 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
             try {
               switch (command) {
                 case "getNavigationBarConfig":
-                  result = this.pageSDK.getNavigationBarConfig();
+                  result = {
+                    "title": barTitle,
+                    //this.pageBar.title,
+                    "backgroundColor": backgroundColor.toHex8(),
+                    "foregroundColor": foregroundColor.toHex8(),
+                    "toolbarOpacity": 0.1,
+                  };
                   break;
                 case "setNavigationBarConfig":
-                  // result = this.pageSDK.setNavigationBarConfig(callbackParams);
-                  print("backgroundColor = $callbackParams");
+                  // 设置标题
                   if (callbackParams["title"] != null) {
+                    barTitle = callbackParams["title"];
                     _titleStreamController.add(callbackParams["title"]);
                   }
-                  backgroundColor = HexColor.fromHex(
-                      callbackParams["backgroundColor"] ?? "#FFFFFF");
+
+                  var newColor = HexColor.fromHex(callbackParams["backgroundColor"] ?? "#FFFFFF");
+                  Color _foregroundColor = Colors.white;
+                  if(callbackParams["foregroundColor"]=='white'){
+                      _foregroundColor = Colors.white;
+                  }else if(callbackParams["foregroundColor"]=='black'){
+                    _foregroundColor = Colors.black;
+                  }
+
                   setState(() {
+                    backgroundColor = newColor;
+                    foregroundColor = _foregroundColor;
                   });
-                  result =
-                      true; // this.pageSDK.setNavigationBarConfig(callbackParams);
+
+                  result = true;
                   break;
                 case "setNavigationBarTitle":
-                  print("title = $callbackParams");
                   _titleStreamController.add(callbackParams["title"]);
-                  result =
-                      true; // this.pageSDK.setNavigationBarTitle(callbackParams);
+                  barTitle = callbackParams["title"];
+                  result = true;
                   break;
                 case "getBluetoothDevices":
                   this.pageSDK.getBluetoothDevices((_scanResults) {

@@ -43,6 +43,15 @@ void main() async {
   // 存储文件的权限申请
   await Permission.storage.request();
 
+
+  // 定位权限申请
+  var status = await Permission.location.status;
+  if (!status.isGranted) {
+    await Permission.location.request();
+  }else{
+    print("定位权限已开启");
+  }
+
   runApp(const MyApp());
 }
 
@@ -59,10 +68,9 @@ class MyApp extends StatelessWidget {
       //android端注意定位权限, Permission.locationWhenInUse 即可
       if (status[Permission.bluetooth] != PermissionStatus.granted) {
         print("没有蓝牙权限"); //这一个是都有的，可以用这个判断，当然最好分平台判断
-        TDToast.showText('没有蓝牙权限', context: context);
+        // TDToast.showText('没有蓝牙权限', context: context);
       }else{
-        TDToast.showIconText('蓝牙权限已开启',
-            icon: TDIcons.check_circle, context: context);
+        // TDToast.showIconText('蓝牙权限已开启', icon: TDIcons.check_circle, context: context);
       }
     });
 

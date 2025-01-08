@@ -82,7 +82,8 @@ export const CmpUi = defineComponent({
 			setNavigationBarConfig: () => {
 				flutterApp.setNavigationBarConfig({
 					title: `设置的新标题${Math.random()}`.substring(0,12),
-					backgroundColor:"#ff0000",
+					backgroundColor:"#007bfc",
+					foregroundColor:'black',
 					success: function (res) {
 						console.log('回调结果: res setNavigationBarTitle');
 						console.log(res);
