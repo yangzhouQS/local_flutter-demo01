@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-
-import 'dart:async';
-import 'dart:developer' as developer;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -20,9 +17,22 @@ class PageSDK {
   String bridgeName = "SDKCommand";
   String titleText = "hello";
 
+  final Stream<String> _titleStream = getTitleStream(); // 获取标题的Stream
+  // 创建一个StreamController来控制标题的更新
+  final StreamController<String> _titleStreamController = StreamController<String>();
+
   AppBar pageBar = AppBar(
     centerTitle: true,
     title: const Text("hello"),
+    // 使用StreamBuilder来构建AppBar的标题
+    /*title: StreamBuilder<String>(
+      stream: _titleStreamController.stream,
+      initialData: 'Initial Title', // 初始标题
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        // 当有新的数据时，更新标题
+        return Text(snapshot.data ?? 'Default Title');
+      },
+    )*/
   );
 
   TDNavBar tdNavBar = TDNavBar(
@@ -40,6 +50,20 @@ class PageSDK {
       "foregroundColor": 'a', // ColorUtils.color2HEX(this.pageBar.foregroundColor!),
       "toolbarOpacity": this.pageBar.toolbarOpacity
     };
+  }
+
+  // 模拟更新标题
+  static void updateTitle(String newTitle) {
+    // 实际应用中，可以通过网络请求或其他方式获取新的标题
+    // 这里只是简单地将新标题添加到Stream中
+    // _titleStream.add(newTitle);
+  }
+
+  // 模拟获取标题的Stream
+  static Stream<String> getTitleStream() {
+    return Stream.periodic(Duration(seconds: 1), (count) {
+      return 'Title $count';
+    });
   }
 
   /**

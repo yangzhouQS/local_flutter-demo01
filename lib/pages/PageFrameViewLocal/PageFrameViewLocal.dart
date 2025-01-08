@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo02/pages/PageFrameViewLocal/PageSDK.dart';
@@ -6,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:convert' as convert;
 import 'package:get/get.dart';
+
+import '../../HexColor.dart';
 // import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PageFrameViewLocal extends StatefulWidget {
@@ -19,8 +23,13 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   String title = "页面";
   bool isRendered = false;
   String url = "";
+  Color backgroundColor = HexColor.fromHex("#ffffff");
   final argumentData = Get.arguments;
   InAppWebViewController? webViewController;
+
+  // 创建一个StreamController来控制标题的更新
+  final StreamController<String> _titleStreamController =
+      StreamController<String>();
 
   // 下拉刷新
   PullToRefreshController? pullToRefreshController;
@@ -101,7 +110,24 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
     // 设置 JavaScript 桥接名称
     InAppWebViewController.setJavaScriptBridgeName(this.pageSDK.bridgeName);
     return Scaffold(
-      appBar: this.pageSDK.pageBar,
+      appBar: AppBar(
+        backgroundColor: HexColor.fromHex("#333333"),
+        // Theme.of(context).colorScheme.inversePrimary,
+        // title: Text(widget.title),
+        // 使用StreamBuilder来构建AppBar的标题
+        title: StreamBuilder<String>(
+          stream: _titleStreamController.stream,
+          initialData: url, // 初始标题
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            print("snapshot.data: ${snapshot.data} url: $url");
+            // 当有新的数据时，更新标题
+            return Text(
+              snapshot.data ?? url,
+              style: TextStyle(color: Colors.red),
+            );
+          },
+        ),
+      ),
       body: Container(
         padding: EdgeInsets.all(10),
         child: Column(children: [
@@ -213,10 +239,23 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   result = this.pageSDK.getNavigationBarConfig();
                   break;
                 case "setNavigationBarConfig":
-                  result = this.pageSDK.setNavigationBarConfig(callbackParams);
+                  // result = this.pageSDK.setNavigationBarConfig(callbackParams);
+                  print("backgroundColor = $callbackParams");
+                  if (callbackParams["title"] != null) {
+                    _titleStreamController.add(callbackParams["title"]);
+                  }
+                  backgroundColor = HexColor.fromHex(
+                      callbackParams["backgroundColor"] ?? "#FFFFFF");
+                  setState(() {
+                  });
+                  result =
+                      true; // this.pageSDK.setNavigationBarConfig(callbackParams);
                   break;
                 case "setNavigationBarTitle":
-                  result = this.pageSDK.setNavigationBarTitle(callbackParams);
+                  print("title = $callbackParams");
+                  _titleStreamController.add(callbackParams["title"]);
+                  result =
+                      true; // this.pageSDK.setNavigationBarTitle(callbackParams);
                   break;
                 case "getBluetoothDevices":
                   this.pageSDK.getBluetoothDevices((_scanResults) {
@@ -266,24 +305,27 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                         );
                       },
                     );
-                  }else if(type == "alert"){
+                  } else if (type == "alert") {
                     showGeneralDialog(
                       context: context,
                       pageBuilder: (BuildContext buildContext,
                           Animation<double> animation,
                           Animation<double> secondaryAnimation) {
                         return TDAlertDialog(
-                          title: title,
-                          content: content,
-                          leftBtn: TDDialogButtonOptions(title: cancelText, action: (){
-                            print('leftBtn click');
-                            Navigator.pop(context);
-                          }),
-                          rightBtn: TDDialogButtonOptions(title: confirmText, action: (){
-                            print('rightBtn click');
-                            Navigator.pop(context);
-                          })
-                        );
+                            title: title,
+                            content: content,
+                            leftBtn: TDDialogButtonOptions(
+                                title: cancelText,
+                                action: () {
+                                  print('leftBtn click');
+                                  Navigator.pop(context);
+                                }),
+                            rightBtn: TDDialogButtonOptions(
+                                title: confirmText,
+                                action: () {
+                                  print('rightBtn click');
+                                  Navigator.pop(context);
+                                }));
                       },
                     );
                   }

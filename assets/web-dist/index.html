@@ -7447,6 +7447,31 @@ const CmpUi = /* @__PURE__ */ defineComponent({
             console.log("error", error);
           }
         });
+      },
+      setNavigationBarTitle: () => {
+        flutterApp.setNavigationBarTitle({
+          title: `设置的新标题${Math.random()}`.substring(0, 12),
+          success: function(res) {
+            console.log("回调结果: res setNavigationBarTitle");
+            console.log(res);
+          },
+          fail: function(error) {
+            console.log("error", error);
+          }
+        });
+      },
+      setNavigationBarConfig: () => {
+        flutterApp.setNavigationBarConfig({
+          title: `设置的新标题${Math.random()}`.substring(0, 12),
+          backgroundColor: "#ff0000",
+          success: function(res) {
+            console.log("回调结果: res setNavigationBarTitle");
+            console.log(res);
+          },
+          fail: function(error) {
+            console.log("error", error);
+          }
+        });
       }
     };
     onMounted(() => {
@@ -7478,6 +7503,16 @@ const CmpUi = /* @__PURE__ */ defineComponent({
           "onClick": methods.loadData
         }, {
           default: () => [createTextVNode("获取barConfig")]
+        }), createVNode(resolveComponent("nut-button"), {
+          "block": true,
+          "onClick": methods.setNavigationBarTitle
+        }, {
+          default: () => [createTextVNode("设置title")]
+        }), createVNode(resolveComponent("nut-button"), {
+          "block": true,
+          "onClick": methods.setNavigationBarConfig
+        }, {
+          default: () => [createTextVNode("页面导航栏")]
         }), createVNode("pre", null, [JSON.stringify(data.value, null, 2)])]
       })]);
     };

@@ -67,6 +67,31 @@ export const CmpUi = defineComponent({
 					}
 				})
 			},
+			setNavigationBarTitle: () => {
+				flutterApp.setNavigationBarTitle({
+					title: `设置的新标题${Math.random()}`.substring(0,12),
+					success: function (res) {
+						console.log('回调结果: res setNavigationBarTitle');
+						console.log(res);
+					},
+					fail: function (error) {
+						console.log("error", error)
+					}
+				})
+			},
+			setNavigationBarConfig: () => {
+				flutterApp.setNavigationBarConfig({
+					title: `设置的新标题${Math.random()}`.substring(0,12),
+					backgroundColor:"#ff0000",
+					success: function (res) {
+						console.log('回调结果: res setNavigationBarTitle');
+						console.log(res);
+					},
+					fail: function (error) {
+						console.log("error", error)
+					}
+				})
+			},
 		}
 
 		onMounted(() => {
@@ -81,6 +106,8 @@ export const CmpUi = defineComponent({
 						<nut-button block onClick={methods.showModal2}>弹出确认框</nut-button>
 						<nut-button block onClick={methods.showToast}>showToast</nut-button>
 						<nut-button block onClick={methods.loadData}>获取barConfig</nut-button>
+						<nut-button block onClick={methods.setNavigationBarTitle}>设置title</nut-button>
+						<nut-button block onClick={methods.setNavigationBarConfig}>页面导航栏</nut-button>
 						<pre>
 							{JSON.stringify(data.value, null, 2)}
 						</pre>
