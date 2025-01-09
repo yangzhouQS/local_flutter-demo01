@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -398,6 +397,11 @@ class PageSDK {
     };
   }
 
+
+  // 网络状态监听
+  void getNetworkType(){
+
+  }
 
   // 覆盖 noSuchMethod 以处理未定义的方法调用
   @override

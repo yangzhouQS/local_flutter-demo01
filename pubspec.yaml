@@ -38,7 +38,6 @@ dependencies:
   mobile_scanner: 6.0.2 # 废弃
   qr_code_scanner_plus: 2.0.6
   geolocator: 13.0.2
-  connectivity_plus: 6.1.1
   #  image_picker: 1.1.2
   #  wechat_assets_picker: ^9.4.2
   #  image_picker: 1.1.0

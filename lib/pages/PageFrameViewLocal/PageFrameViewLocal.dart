@@ -346,7 +346,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                 case "getClipboardData":
                   ClipboardData? data =
                       await Clipboard.getData(Clipboard.kTextPlain);
-
                   print("getClipboardData text = ${data?.text}");
                   result = {"data": data?.text ?? "", "status": "success"};
                   break;
@@ -354,11 +353,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   result = await this.pageSDK.getLocation();
                   break;
                 case "getNetworkType":
-                  ClipboardData? data =
-                      await Clipboard.getData(Clipboard.kTextPlain);
-
-                  print("getClipboardData text = ${data?.text}");
-                  result = {"data": data?.text ?? "", "status": "success"};
+                  result = {"data": "wifi", "status": "success", "message": "接口功能未实现"};
                   break;
                 default:
               }
