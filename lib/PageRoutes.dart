@@ -1,4 +1,5 @@
 import 'package:flutter_demo02/pages/PageFrameViewLocal/PageFrameViewLocal.dart';
+import 'package:flutter_demo02/pages/PageScanner/PageQRView.dart';
 import 'package:get/get.dart';
 import './PageHome.dart';
 import './pages/PageLayout/PageFlex.dart';
@@ -18,5 +19,6 @@ class PageRouter {
     GetPage(name: "/PageFrameViewLocal", page: () => PageFrameViewLocal(), transition: Transition.fadeIn),
     GetPage(name: "/PageDemo", page: () => PageDemo(), transition: Transition.fadeIn),
     GetPage(name: "/PageScanner", page: () => PageScanner(), transition: Transition.fadeIn),
+    GetPage(name: "/PageQRView", page: () => PageQRView(), transition: Transition.fadeIn),
   ];
 }

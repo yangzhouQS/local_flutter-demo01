@@ -182,9 +182,9 @@ class _PageHomeState extends State<PageHome> {
                   flex: 1,
                   child: TDButton(
                     onTap: (){
-                      Get.toNamed("/PageScanner");
+                      Get.toNamed("/PageQRView");
                     },
-                    text: "扫码测试",
+                    text: "扫码测试1",
                     icon: TDIcons.barcode,
                     size: TDButtonSize.large,
                     type: TDButtonType.fill,
@@ -198,7 +198,7 @@ class _PageHomeState extends State<PageHome> {
                     onTap: (){
                       Get.toNamed("/PageScanner");
                     },
-                    text: "扫码测试",
+                    text: "扫码测试2",
                     icon: TDIcons.barcode,
                     size: TDButtonSize.large,
                     type: TDButtonType.fill,

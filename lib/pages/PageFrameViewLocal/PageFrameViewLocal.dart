@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_demo02/pages/PageFrameViewLocal/PageSDK.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
@@ -43,7 +44,6 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
 
   PageSDK pageSDK = PageSDK();
 
-
   @override
   void didUpdateWidget(PageFrameViewLocal oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -82,6 +82,9 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
     url = "";
   }
 
+  // 使用Get.put()实例化你的类，使其对当下的所有子路由可用。
+  final frameController = Get.put(FrameViewController());
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey webViewKey = GlobalKey();
@@ -115,10 +118,9 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             print("snapshot.data: ${snapshot.data} url: $url");
             // 当有新的数据时，更新标题
-            return Text(
-                snapshot.data ?? url,
+            return Text(snapshot.data ?? url,
                 style: titleTextStyle // TextStyle(color: Colors.white),
-            );
+                );
           },
         ),
       ),
@@ -233,11 +235,12 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                     _titleStreamController.add(callbackParams["title"]);
                   }
 
-                  var newColor = HexColor.fromHex(callbackParams["backgroundColor"] ?? "#FFFFFF");
+                  var newColor = HexColor.fromHex(
+                      callbackParams["backgroundColor"] ?? "#FFFFFF");
                   Color _foregroundColor = Colors.white;
-                  if(callbackParams["foregroundColor"]=='white'){
-                      _foregroundColor = Colors.white;
-                  }else if(callbackParams["foregroundColor"]=='black'){
+                  if (callbackParams["foregroundColor"] == 'white') {
+                    _foregroundColor = Colors.white;
+                  } else if (callbackParams["foregroundColor"] == 'black') {
                     _foregroundColor = Colors.black;
                   }
 
@@ -328,6 +331,25 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
 
                   result = true;
                   break;
+                case "scanCode":
+                  Get.toNamed("/PageQRView");
+                  result = true;
+                  break;
+
+                // ----------------- Clipboard -----------------
+                case "setClipboardData":
+                  var text = callbackParams["text"] ?? "";
+                  await Clipboard.setData(ClipboardData(text: text));
+
+                  result = {"data": text, "status": "success"};
+                  break;
+                case "getClipboardData":
+                  ClipboardData? data =
+                      await Clipboard.getData(Clipboard.kTextPlain);
+
+                  print("getClipboardData text = ${data?.text}");
+                  result = {"data": data?.text ?? "", "status": "success"};
+                  break;
                 default:
               }
 
@@ -350,4 +372,10 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
           };
         });
   }
+}
+
+class FrameViewController extends GetxController {
+  var count = 0.obs;
+
+  increment() => count++;
 }
