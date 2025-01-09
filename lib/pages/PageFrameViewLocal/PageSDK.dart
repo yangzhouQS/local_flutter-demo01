@@ -7,6 +7,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 // 蓝牙扫描
 late StreamSubscription<List<ScanResult>> _scanRetsSubscription;
@@ -346,6 +348,56 @@ class PageSDK {
         other.name == name &&
         other.age == age;
   }*/
+
+
+  // 定位信息获取
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // 检查定位服务是否启用
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // 定位服务未启用时，可以引导用户去设置中启用
+      return Future.error('定位服务未启用');
+    }
+
+    // 检查定位权限
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // 权限被拒绝时，可以告知用户
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // 权限被永久拒绝时，可以引导用户去应用设置中手动开启权限
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // 获取当前位置
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<Map<dynamic, Object>> getLocation() async {
+    Position position = await _determinePosition();
+    print('Latitude: ${position.latitude}, Longitude:${position.longitude}');
+
+    return {
+      "latitude": position.latitude, // 纬度
+      "longitude": position.longitude, // 经度
+      "timestamp": position.timestamp.toString(), // 时间戳
+      "accuracy": position.accuracy, // 定位精度
+      "altitude": position.altitude, // 海拔
+      "heading": position.heading, // 方向
+      "speed": position.speed, // 速度
+      "speedAccuracy": position.speedAccuracy, // 速度精度
+    };
+  }
+
 
   // 覆盖 noSuchMethod 以处理未定义的方法调用
   @override

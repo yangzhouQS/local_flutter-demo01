@@ -350,6 +350,16 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   print("getClipboardData text = ${data?.text}");
                   result = {"data": data?.text ?? "", "status": "success"};
                   break;
+                case "getLocation":
+                  result = await this.pageSDK.getLocation();
+                  break;
+                case "getNetworkType":
+                  ClipboardData? data =
+                      await Clipboard.getData(Clipboard.kTextPlain);
+
+                  print("getClipboardData text = ${data?.text}");
+                  result = {"data": data?.text ?? "", "status": "success"};
+                  break;
                 default:
               }
 

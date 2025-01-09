@@ -35,7 +35,7 @@ const value = ref('ui')
       <nut-tab-pane title="二维码" pane-key="scannerCode">
         <CmpScannerCode/>
       </nut-tab-pane>
-      <nut-tab-pane title="剪切板" pane-key="ClipboardData">
+      <nut-tab-pane title="设备" pane-key="ClipboardData">
         <CmpClipboardData/>
       </nut-tab-pane>
     </nut-tabs>
