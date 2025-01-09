@@ -21,19 +21,10 @@ version: 1.0.0+1
 environment:
   sdk: ^3.5.4
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_inappwebview: ^6.2.0-beta.2
   permission_handler: ^11.3.1
@@ -41,11 +32,13 @@ dependencies:
   get: ^4.6.6
   fancy_bottom_navigation: ^0.3.3
   tdesign_flutter: ^0.1.7
-#  flutter_blue: 0.8.0
+  #  flutter_blue: 0.8.0
   flutter_blue_plus: ^1.34.5
   device_info_plus: ^11.2.0
-#  wechat_assets_picker: ^9.4.2
-#  image_picker: 1.1.0
+  mobile_scanner: 6.0.2
+  qr_code_scanner_plus: 2.0.6
+  #  wechat_assets_picker: ^9.4.2
+  #  image_picker: 1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -6,6 +6,7 @@ import './pages/PageNotFound/PageNotFound.dart';
 import './pages/PageLogin/PageLogin.dart';
 import 'pages/PageDemo/PageDemo.dart';
 import 'pages/PageFrameView/PageFrameView.dart';
+import 'pages/PageScanner/PageScanner.dart';
 
 class PageRouter {
   static final routers = [
@@ -16,5 +17,6 @@ class PageRouter {
     GetPage(name: "/PageFrameView", page: () => PageFrameView(), transition: Transition.fadeIn),
     GetPage(name: "/PageFrameViewLocal", page: () => PageFrameViewLocal(), transition: Transition.fadeIn),
     GetPage(name: "/PageDemo", page: () => PageDemo(), transition: Transition.fadeIn),
+    GetPage(name: "/PageScanner", page: () => PageScanner(), transition: Transition.fadeIn),
   ];
 }

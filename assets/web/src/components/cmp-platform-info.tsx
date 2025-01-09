@@ -13,9 +13,18 @@ export const CmpPlatformInfo = defineComponent({
 		const menuConfig = ref([])
 		const info = ref({
 			brand:'',
-			model:'',
 			id:'',
 			host:'',
+			display:"", // 用于向用户显示的构建ID字符串
+			bootloader:"", // 系统引导程序的版本号
+			fingerprint:"", // 唯一标识此构建的字符串
+			hardware:"", // 硬件的名称（来自内核命令行或/proc）
+			manufacturer:"", // 产品/硬件的制造商
+			model:"", // 最终产品的最终用户可见名称
+			product:"", // 整体产品的名称
+			serialNumber:"", // 设备的硬件序列号（如果可用）
+			tags:"", // 描述构建的逗号分隔的标签，如 “unsigned,debug”
+			type:"", // 构建的类型，如 “user” 或 “eng”
 		})
 
 		// methods

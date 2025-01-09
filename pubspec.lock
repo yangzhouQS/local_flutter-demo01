@@ -288,6 +288,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.15.0"
+  mobile_scanner:
+    dependency: "direct main"
+    description:
+      name: mobile_scanner
+      sha256: "728828a798d1a2ee506beb652ca23d974c542c96ed03dcbd5eaf97bef96cdaad"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.0.2"
   path:
     dependency: transitive
     description:
@@ -352,6 +360,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.8"
+  qr_code_scanner_plus:
+    dependency: "direct main"
+    description:
+      name: qr_code_scanner_plus
+      sha256: "0571647f50798c136296e2aad46f0282d8299609201fa4a34693b3df083d1d95"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.6"
   sky_engine:
     dependency: transitive
     description: flutter

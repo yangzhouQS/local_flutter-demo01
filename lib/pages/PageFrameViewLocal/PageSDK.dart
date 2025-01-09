@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -317,6 +319,7 @@ class PageSDK {
     deviceData.remove('supported64BitAbis');
 
     print("system info: $deviceData");
+    print(jsonEncode(deviceData));
     return deviceData;
   }
 

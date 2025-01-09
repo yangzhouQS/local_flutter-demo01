@@ -175,6 +175,39 @@ class _PageHomeState extends State<PageHome> {
                   )),
             ],
           ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              Flexible(
+                  flex: 1,
+                  child: TDButton(
+                    onTap: (){
+                      Get.toNamed("/PageScanner");
+                    },
+                    text: "扫码测试",
+                    icon: TDIcons.barcode,
+                    size: TDButtonSize.large,
+                    type: TDButtonType.fill,
+                    shape: TDButtonShape.rectangle,
+                    theme: TDButtonTheme.light,
+                    isBlock: true,
+                  )),
+              Flexible(
+                  flex: 1,
+                  child: TDButton(
+                    onTap: (){
+                      Get.toNamed("/PageScanner");
+                    },
+                    text: "扫码测试",
+                    icon: TDIcons.barcode,
+                    size: TDButtonSize.large,
+                    type: TDButtonType.fill,
+                    shape: TDButtonShape.rectangle,
+                    theme: TDButtonTheme.light,
+                    isBlock: true,
+                  )),
+            ],
+          ),
           SizedBox(height: 16),
           Row(
             children: List.generate(3, (index) => getItem(index)),
