@@ -23,6 +23,10 @@ var FlutterAPP = (function () {
             return "test 测试正常"
         };
 
+        // ------------device---------
+        Command.prototype.getNetworkType = function (options) {
+            return this.exec("getNetworkType", options);
+        };
         // -----------share------
         Command.prototype.showShareModal = function (options) {
             return this.exec("showShareModal", options);

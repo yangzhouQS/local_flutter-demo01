@@ -205,16 +205,11 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
             param = params[0];
           }
 
-          // print(param);
-          // print(param.runtimeType);
 
           if (!param.isEmpty) {
             var command = param["command"] ?? "";
             var callbackId = param["callbackId"] ?? '';
             var callbackParams = param["params"] as Map<String, dynamic>;
-
-            print("-----------callbackParams------------");
-            print(callbackParams.runtimeType);
 
             var result;
             try {
@@ -353,6 +348,11 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   result = await this.pageSDK.getLocation();
                   break;
                 case "getNetworkType":
+                  result = {"data": "wifi", "status": "success", "message": "接口功能未实现"};
+                  break;
+
+                  // --------------------------设备 媒体文件操作
+                case "chooseAttachments":
                   result = {"data": "wifi", "status": "success", "message": "接口功能未实现"};
                   break;
                 default:

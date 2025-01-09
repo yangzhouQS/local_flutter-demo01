@@ -30467,6 +30467,9 @@ const NutUI = {
     Command2.prototype.test = function() {
       return "test 测试正常";
     };
+    Command2.prototype.getNetworkType = function(options) {
+      return this.exec("getNetworkType", options);
+    };
     Command2.prototype.showShareModal = function(options) {
       return this.exec("showShareModal", options);
     };

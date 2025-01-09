@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--写入文件权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--读取文件权限-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 相机权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
 
     <!--相册选择图片-->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -12,9 +19,6 @@
 
     <!--    保持屏幕唤醒状态-->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
-    <!--    下载文件存储的权限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- 蓝牙-->
     <!-- Allow Bluetooth -->
@@ -41,8 +45,8 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
 
-
     <application
+        android:requestLegacyExternalStorage="true"
         android:name="${applicationName}"
         android:icon="@mipmap/img_logo"
         android:label="演示外壳应用"
