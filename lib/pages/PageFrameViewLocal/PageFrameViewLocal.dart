@@ -23,7 +23,7 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
   String url = "";
 
   // 导航栏背景色
-  Color backgroundColor = HexColor.fromHex("#ffffff");
+  Color backgroundColor = Colors.blue; // HexColor.fromHex("#ffffff");
   // 设置AppBar的前景颜色，例如标题、图标等
   Color foregroundColor = Colors.white;
   final argumentData = Get.arguments;
