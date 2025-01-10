@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_demo02/pages/PageFrameViewLocal/PageSDK.dart';
+import 'package:flutter_demo02/pages/PageFrameViewLocal/plugins/notificationUtils.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -131,9 +132,16 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
             child: InAppWebView(
               key: webViewKey,
               initialSettings: settings,
+              /// 加载html代码
+              initialData: null,
+
+              /// 加载网络地址
               initialUrlRequest: null,
+
+              /// 加载本地文件
               initialFile: this.url,
               // "assets/html/demo.html",
+
               onWebViewCreated: customWebViewCreated,
               // 当 WebView 开始加载某个 URL 时触发该事件
               onLoadStart: (controller, url) {
@@ -349,6 +357,16 @@ class PageFrameViewLocalState extends State<PageFrameViewLocal> {
                   break;
                 case "getNetworkType":
                   result = {"data": "wifi", "status": "success", "message": "接口功能未实现"};
+                  break;
+
+                // -------------------------- 消息通知
+                case "showNotification":
+                  var title = callbackParams["title"] ?? "标题";
+                  var body = callbackParams["body"] ?? "内容";
+
+                  notification.initialize();
+                  await notification.showNotification(title: title, body: body);
+                  result = {"data": true, "status": "success", "message": "消息发送成功"};
                   break;
 
                   // --------------------------设备 媒体文件操作

@@ -184,7 +184,7 @@ class _PageHomeState extends State<PageHome> {
                     onTap: (){
                       Get.toNamed("/PageQRView");
                     },
-                    text: "扫码测试1",
+                    text: "扫码测试",
                     icon: TDIcons.barcode,
                     size: TDButtonSize.large,
                     type: TDButtonType.fill,
@@ -196,10 +196,10 @@ class _PageHomeState extends State<PageHome> {
                   flex: 1,
                   child: TDButton(
                     onTap: (){
-                      Get.toNamed("/PageScanner");
+                      Get.toNamed("/PageNotification");
                     },
-                    text: "扫码测试2",
-                    icon: TDIcons.barcode,
+                    text: "消息通知",
+                    icon: TDIcons.chart_bubble,
                     size: TDButtonSize.large,
                     type: TDButtonType.fill,
                     shape: TDButtonShape.rectangle,

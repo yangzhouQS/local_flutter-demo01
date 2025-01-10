@@ -1,4 +1,5 @@
 import 'package:flutter_demo02/pages/PageFrameViewLocal/PageFrameViewLocal.dart';
+import 'package:flutter_demo02/pages/PageNotification/PageNotifition.dart';
 import 'package:flutter_demo02/pages/PageScanner/PageQRView.dart';
 import 'package:get/get.dart';
 import './PageHome.dart';
@@ -20,5 +21,8 @@ class PageRouter {
     GetPage(name: "/PageDemo", page: () => PageDemo(), transition: Transition.fadeIn),
     GetPage(name: "/PageScanner", page: () => PageScanner(), transition: Transition.fadeIn),
     GetPage(name: "/PageQRView", page: () => PageQRView(), transition: Transition.fadeIn),
+
+    // 通知页面
+    GetPage(name: "/PageNotification", page: () => PagePageNotification(), transition: Transition.fadeIn),
   ];
 }

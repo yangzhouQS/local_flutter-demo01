@@ -8,6 +8,7 @@ import {CmpNavigation} from "./components/cmp-navigation";
 import {CmpMedia} from "./components/cmp-media";
 import {CmpScannerCode} from "./components/cmp-scanner-code";
 import {CmpClipboardData} from "./components/cmp-clipboard-data";
+import {CmpNotification} from "./components/cmp-notification";
 
 const value = ref('ui')
 </script>
@@ -37,6 +38,9 @@ const value = ref('ui')
       </nut-tab-pane>
       <nut-tab-pane title="设备" pane-key="ClipboardData">
         <CmpClipboardData/>
+      </nut-tab-pane>
+      <nut-tab-pane title="通知" pane-key="CmpNotification">
+        <CmpNotification/>
       </nut-tab-pane>
     </nut-tabs>
   </div>

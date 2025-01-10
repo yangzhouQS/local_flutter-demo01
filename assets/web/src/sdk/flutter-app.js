@@ -27,6 +27,9 @@ var FlutterAPP = (function () {
         Command.prototype.getNetworkType = function (options) {
             return this.exec("getNetworkType", options);
         };
+        Command.prototype.showNotification = function (options) {
+            return this.exec("showNotification", options);
+        };
         // -----------share------
         Command.prototype.showShareModal = function (options) {
             return this.exec("showShareModal", options);
